@@ -2,38 +2,40 @@
 import * as ReactDOM from "react-dom/client";
 import {
   // BrowserRouter, Routes, Route
-  createBrowserRouter, RouterProvider,
+  createBrowserRouter, Outlet, RouterProvider,
 } from "react-router-dom";
 import HomePage from './components/HomePage'
 import ErrorPage from "./components/errors/ErrorPage";
-import MainLayout from "./layout/MainLayout";
 import LoginPage from "./components/login/LoginPage";
 import Home from "./components/app/Home";
 import UploadFile from "./components/app/upload/UploadFile";
+import Printer from "./components/app/upload/Printer";
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <MainLayout />, // Main layout for these routes
-    children: [
-      {
-        path: '/',
-        element: <HomePage />, // Default route
-        errorElement: <ErrorPage />,
-      },
-      {
-        path: 'home',
-        element: <Home />,
-      },
-      {
-        path: 'upload',
-        element: <UploadFile />,
-      }
-    ],
+    element: <HomePage />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: '/home',
+    element:  <Home />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: '/upload',
+    element: <UploadFile />,
+    errorElement: <ErrorPage />,
   },
   {
     path: '/login',
     element: <LoginPage />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: '/upload/printer',
+    element: <Printer />,
+    errorElement: <ErrorPage />,
   }
 ]);
 

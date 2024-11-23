@@ -1,20 +1,34 @@
 import React, { useRef, useState } from 'react';
-import { FaCloudUploadAlt } from 'react-icons/fa';
-import { AiOutlineClose, AiOutlineCheckCircle } from 'react-icons/ai';
+import { Link } from 'react-router-dom';
+import { FaRegTrashCan } from "react-icons/fa6";
+import { IoCloudUploadOutline } from "react-icons/io5";
+import { AiOutlineClose, AiOutlineCheckCircle, AiOutlineHistory } from 'react-icons/ai';
+import Footer from '../../layout/Footer';
+import Header from '../../layout/Header';
+
+const apiUploadedFile = [
+  { id: 1, name: 'file1.txt', size: 10, },
+  { id: 2, name: 'file2.txt', size: 20, },
+  { id: 3, name: 'file3.txt', size: 30, },
+]
 
 const FileUpload = () => {
   const [files, setFiles] = useState([]);
+  const [uploadedFile, setUploadedFile] = useState(apiUploadedFile);
   const fileInputRef = useRef(null);
 
   const handleFiles = (event) => {
     const selectedFiles = Array.from(event.target.files);
     uploadFiles(selectedFiles);
+    event.target.value = null;
+    
   };
 
   const handleDrop = (event) => {
     event.preventDefault();
     const droppedFiles = Array.from(event.dataTransfer.files);
     uploadFiles(droppedFiles);
+    event.dataTransfer.clearData();
   };
 
   const uploadFiles = (filesToUpload) => {
@@ -43,73 +57,125 @@ const FileUpload = () => {
     });
 
     setFiles((prevFiles) => [...prevFiles, ...newFiles]);
+
   };
 
   const handleClick = () => {
     fileInputRef.current.click();
   };
 
+  const handleDeleteFile = (file) => {
+    setFiles(prev => prev.filter((f) => f.name !== file.name));
+  }
+
   return (
-    <div className="tw-p-6 tw-max-w-3xl tw-max-h-max tw-mx-auto tw-bg-[#f4f7fa] tw-rounded-lg tw-shadow-md">
-      <h2 className="tw-text-lg tw-font-semibold tw-text-gray-700">Upload files</h2>
-      <p className="tw-text-sm tw-text-gray-500">Select and upload the files of your choice</p>
-      
-      <div
-        className="tw-border-dashed tw-border-2 tw-border-gray-300 tw-mt-4 tw-p-6 tw-text-center tw-cursor-pointer tw-rounded-lg"
-        onDrop={handleDrop}
-        onDragOver={(e) => e.preventDefault()}
-        onClick={handleClick}
-      >
-        <FaCloudUploadAlt className="tw-text-4xl tw-text-gray-400 tw-mx-auto" />
-        <p className="tw-text-gray-500">Choose a file or drag & drop it here</p>
-        <p className="tw-text-xs tw-text-gray-400 tw-mt-2">JPEG, PNG, PDF, and MP4 formats, up to 50MB</p>
-        <button
-          className="tw-mt-3 tw-px-4 tw-py-2 tw-bg-blue-600 tw-text-white tw-rounded-md tw-hover:bg-blue-500"
-          onClick={handleClick}
-        >
-          Browse File
-        </button>
-        <input ref={fileInputRef} type="file" className="tw-hidden" onChange={handleFiles} multiple />
+    <>
+    <Header />
+    <div className='tw-grid tw-grid-cols-4'>
+      <div className='tw-max-h-min tw-mx-auto tw-rounded-2xl tw-shadow-md tw-bg-white tw-p-6 tw-mt-8'>
+        <div className='tw-relative tw-line-after tw-flex'>
+          <AiOutlineHistory className='tw-inline-block tw-text-2xl tw-text-customBlue tw-mr-2 tw-border-solid tw-border-2 tw-rounded-full tw-p-0.5'/>
+          <h2 className=' tw-text-lg tw-inline-block tw-text-customBlue'>Uploaded files</h2>
+        </div>
+        
+        <div className=''>
+          {uploadedFile && uploadedFile.length > 0 && uploadedFile.map((file) => {
+            return (
+              <div key={file.id}>
+                <p>{file.name}</p>
+              </div>
+            )
+          })}
+        </div>
       </div>
-      
-      <div className="tw-mt-4">
-        {files.map((file, index) => (
-          <div
-            key={index}
-            className="tw-flex tw-items-center tw-justify-between tw-bg-white tw-p-2 tw-rounded-lg tw-shadow tw-my-2"
+
+      {/* content */}
+      <div className="tw-col-start-2 tw-col-end-5 tw-p-6 tw-min-w-[70%] tw-min-h-max tw-ml-2 tw-mr-[40%] tw-bg-white tw-rounded-3xl tw-shadow-md tw-mt-8 ">
+        <div className='tw-flex'>
+          <IoCloudUploadOutline className="tw-text-customBlue tw-text-5xl tw-border-solid tw-border-2 tw-rounded-full tw-p-2 tw-mr-3 tw-flex-none "/>
+          <div className='tw-flex-1 tw-w-auto'>
+            <h2 className="tw-text-lg tw-text-customBlue">Upload files</h2>
+            <p className="tw-text-sm tw-text-customPurple">Select and upload the files of your choice</p>
+          </div>
+          <AiOutlineClose className="tw-flex-initial tw-ml-2 tw-border tw-p-0.5 tw-cursor-pointer tw-text-blue-300 tw-border-blue-300 tw-rounded-full" />
+        </div>
+
+        <div className="tw-w-full tw-h-0.5 tw-bg-gray-300 tw-my-4"></div>
+
+        <div
+          className="tw-border-dashed tw-border-2 tw-border-gray-300 tw-mt-12 tw-p-6 tw-text-center tw-cursor-pointer tw-rounded-lg "
+          onDrop={handleDrop}
+          onDragOver={(e) => e.preventDefault()}
+        >
+          <IoCloudUploadOutline className="tw-text-customBlue tw-text-4xl tw-mx-auto tw-mb-4"/>
+          <div className=' tw-mt-4'>
+            <p className="tw-text-customBlue">Choose a file or drag & drop it here</p>
+            <p className="tw-text-xs tw-text-customPurple tw-mt-2">DOC, PDF, up to 5MB</p>
+          </div>
+          
+          <button
+            className="tw-mt-5 tw-px-4 tw-py-2 tw-bg-white tw-text-customBlue tw-rounded-md tw-border-solid tw-border"
+            onClick={handleClick}
           >
-            <div className="tw-flex tw-items-center">
-              <span className="tw-mr-2 tw-text-red-600">PDF</span>
-              <div>
-                <p className="tw-font-medium tw-text-gray-700">{file.name}</p>
-                <p className="tw-text-xs tw-text-gray-500">
-                  {Math.round(file.uploadedSize / 1024)} KB of {Math.round(file.size / 1024)} KB
-                </p>
+            Browse File
+          </button>
+          <input ref={fileInputRef} type="file" className="tw-hidden" onChange={handleFiles} multiple />
+        </div>
+        
+        <div className="tw-mt-4">
+          {files.map((file, index) => (
+            <div
+              key={index}
+              className="tw-flex tw-items-center tw-justify-between tw-bg-[#f1f2f3] tw-p-2 tw-rounded-lg tw-shadow tw-my-2"
+            >
+              <div className="tw-flex tw-items-center">
+                <span className="tw-mr-2 tw-text-red-600">PDF</span>
+                <div>
+                  <p className="tw-font-medium tw-text-gray-700">{file.name}</p>
+                  <p className="tw-text-xs tw-text-opacity-10 tw-text-gray-200">
+                    {Math.round(file.uploadedSize / 1024)} KB of {Math.round(file.size / 1024)} KB
+                  </p>
+                </div>
+              </div>
+              <div className="tw-flex tw-items-center">
+                {!file.isCompleted ? (
+                  <progress
+                    className="tw-w-24 tw-h-2 tw-mr-2 tw-rounded"
+                    value={file.uploadedSize}
+                    max={file.size}
+                  ></progress>
+                ) : (
+                  <AiOutlineCheckCircle className="tw-text-green-500 tw-mr-2" />
+                )}
+                <span className="tw-text-xs">
+                  {file.isCompleted ? (
+                    <span className="tw-text-green-600 tw-block">Completed</span>
+                  ) : (
+                    <span className="tw-text-blue-600">Uploading...</span>
+                  )}
+                </span>
+                {file.isCompleted ? (
+                  <FaRegTrashCan 
+                  onClick={() => handleDeleteFile(file)}
+                  className='tw-text-xs tw-ml-2 tw-cursor-pointer tw-block tw-text-red-500'/>
+                ) : (
+                  <AiOutlineClose 
+                  onClick={() => handleDeleteFile(file)}
+                  className="tw-ml-2 tw-cursor-pointer tw-text-red-500 " /> 
+                )}
               </div>
             </div>
-            <div className="tw-flex tw-items-center">
-              {!file.isCompleted ? (
-                <progress
-                  className="tw-w-24 tw-h-2 tw-mr-2 tw-rounded"
-                  value={file.uploadedSize}
-                  max={file.size}
-                ></progress>
-              ) : (
-                <AiOutlineCheckCircle className="tw-text-green-500 tw-mr-2" />
-              )}
-              <span className="tw-text-xs">
-                {file.isCompleted ? (
-                  <span className="tw-text-green-600">Completed</span>
-                ) : (
-                  <span className="tw-text-blue-600">Uploading...</span>
-                )}
-              </span>
-              <AiOutlineClose className="tw-ml-2 tw-cursor-pointer tw-text-gray-400 tw-hover:text-red-500" />
-            </div>
+          ))}
+          <div className='tw-flex tw-items-center tw-justify-center'>
+            <button className='tw-flex tw-mx-auto tw-text-customBlue tw-bg-white tw-border tw-rounded-md tw-border-solid tw-p-1'>
+              <Link to='/upload/printer'>Confirm</Link>
+            </button>
           </div>
-        ))}
+        </div>
       </div>
     </div>
+    <Footer />
+    </>
   );
 };
 

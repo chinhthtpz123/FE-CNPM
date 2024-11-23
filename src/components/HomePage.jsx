@@ -1,5 +1,6 @@
 
-import { useState } from 'react'
+import { useState } from 'react';
+import Footer from './layout/Footer';
 
 // css template
 import '../assets/css/templatemo-chain-app-dev.css';
@@ -394,6 +395,8 @@ function HomePage() {
           </div>
         </div>
       </div>
+
+      <Footer />
     </>
   )
 }
