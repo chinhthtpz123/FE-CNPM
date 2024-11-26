@@ -10,7 +10,8 @@ import LoginPage from "./components/login/LoginPage";
 import Home from "./components/app/Home";
 import UploadFile from "./components/app/upload/UploadFile";
 import Printer from "./components/app/upload/Printer";
-
+import Printsetting from "./components/app/Printsetting/PrintSettings"
+import ConfirmPrint from "./components/app/ConfirmPrint/ConfirmPrint.jsx"
 const router = createBrowserRouter([
   {
     path: '/',
@@ -35,6 +36,16 @@ const router = createBrowserRouter([
   {
     path: '/upload/printer',
     element: <Printer />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: '/printsetting',
+    element: <Printsetting />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: '/confirm',
+    element: <ConfirmPrint />,
     errorElement: <ErrorPage />,
   }
 ]);
