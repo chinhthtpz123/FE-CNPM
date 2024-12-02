@@ -3,8 +3,7 @@ import { Link } from 'react-router-dom';
 import { FaRegTrashCan } from "react-icons/fa6";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { AiOutlineClose, AiOutlineCheckCircle, AiOutlineHistory } from 'react-icons/ai';
-import Footer from '../../layout/Footer';
-import Header from '../../layout/Header';
+import Nav from '../../layout/Nav';
 
 const apiUploadedFile = [
   { id: 1, name: 'file1.txt', size: 10, },
@@ -70,12 +69,12 @@ const FileUpload = () => {
 
   return (
     <>
-    <Header />
-    <div className='tw-grid tw-grid-cols-4'>
+    <Nav />
+    <div className='tw-ml-[240px] tw-mt-[73px] tw-grid tw-grid-cols-4'>
       <div className='tw-max-h-min tw-mx-auto tw-rounded-2xl tw-shadow-md tw-bg-white tw-p-6 tw-mt-8'>
         <div className='tw-relative tw-line-after tw-flex'>
           <AiOutlineHistory className='tw-inline-block tw-text-2xl tw-text-customBlue tw-mr-2 tw-border-solid tw-border-2 tw-rounded-full tw-p-0.5'/>
-          <h2 className=' tw-text-lg tw-inline-block tw-text-customBlue'>Uploaded files</h2>
+          <h2 className='tw-z-0 tw-text-lg tw-inline-block tw-text-customBlue'>Uploaded files</h2>
         </div>
         
         <div className=''>
@@ -92,7 +91,7 @@ const FileUpload = () => {
       {/* content */}
       <div className="tw-col-start-2 tw-col-end-5 tw-p-6 tw-min-w-[70%] tw-min-h-max tw-ml-2 tw-mr-[40%] tw-bg-white tw-rounded-3xl tw-shadow-md tw-mt-8 ">
         <div className='tw-flex'>
-          <IoCloudUploadOutline className="tw-text-customBlue tw-text-5xl tw-border-solid tw-border-2 tw-rounded-full tw-p-2 tw-mr-3 tw-flex-none "/>
+          <IoCloudUploadOutline className="tw-text-customBlue tw-text-5xl tw-z-0 tw-border-solid tw-border-2 tw-rounded-full tw-p-2 tw-mr-3 tw-flex-none "/>
           <div className='tw-flex-1 tw-w-auto'>
             <h2 className="tw-text-lg tw-text-customBlue">Upload files</h2>
             <p className="tw-text-sm tw-text-customPurple">Select and upload the files of your choice</p>
@@ -174,7 +173,6 @@ const FileUpload = () => {
         </div>
       </div>
     </div>
-    <Footer />
     </>
   );
 };
