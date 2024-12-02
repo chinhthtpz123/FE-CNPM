@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import Header from '../../layout/Nav';
+import Footer from '../../layout/Footer';
 import '../../../input.css';
 
 const PrintSettings = () => {
@@ -23,133 +25,139 @@ const PrintSettings = () => {
   };
 
   return (
-    <div className="print-settings-page">
-      <div className="print-settings">
-        <div className="title">🖨Tùy chỉnh thông số in🖨</div>
-        <div className="container">
-          {/* Phần Xem Trước */}
-          <div className="preview">
-            <div className="preview-label">Xem trước</div>
-            <div className={`preview-box ${orientation}`} />
-            <img className="preview-logo" src="/HCMUT-BachKhoa-Logo.png" alt="Logo" />
-          </div>
+    <>
+     <Header />
 
-          {/* Phần Thiết lập Thông số */}
-          <div className="settings">
-            <label className="label">
-              <span className="label-title">Số bản:</span>
-              <input
-                type="number"
-                value={numberOfCopies}
-                onChange={(e) => handleNumberChange(e, setNumberOfCopies)}
-              />
-            </label>
-            <label className="label">
-              <span className="label-title">Kích thước:</span>
-              <select value={pageSize} onChange={handlePageSizeChange}>
-                <option>A3</option>
-                <option>A4</option>
-                <option>A5</option>
-              </select>
-            </label>
-            <label className="label">
-              <span className="label-title">In từ trang:</span>
-              <input
-                type="number"
-                value={fromPage}
-                onChange={(e) => handleNumberChange(e, setFromPage)}
-              />
-            </label>
-            <label className="label">
-              <span className="label-title">Đến trang:</span>
-              <input
-                type="number"
-                value={toPage}
-                onChange={(e) => handleNumberChange(e, setToPage)}
-              />
-            </label>
-
-            {/* Tiêu đề Hướng In */}
-            <div className="label">
-              <span className="label-title radio-group-title">Hướng in</span>
-              <div className="radio-group">
-                <input
-                  type="radio"
-                  id="doc"
-                  name="orientation"
-                  value="doc"
-                  checked={orientation === 'doc'}
-                  onChange={handleOrientationChange}
-                />
-                <label htmlFor="doc">Dọc</label>
-                <input
-                  type="radio"
-                  id="ngang"
-                  name="orientation"
-                  value="ngang"
-                  checked={orientation === 'ngang'}
-                  onChange={handleOrientationChange}
-                />
-                <label htmlFor="ngang">Ngang</label>
-              </div>
+      <div className="print-settings-page">
+        <div className="print-settings">
+          <div className="title">🖨Tùy chỉnh thông số in🖨</div>
+          <div className="container">
+            {/* Phần Xem Trước */}
+            <div className="preview">
+              <div className="preview-label">Xem trước</div>
+              <div className={`preview-box ${orientation}`} />
+              <img className="preview-logo" src="/HCMUT-BachKhoa-Logo.png" alt="Logo" />
             </div>
 
-            {/* Phần Canh Lề */}
-            <div className="margin-settings">
-              <div className="margin-settings-title">Canh lề (inch)</div>
-              <div className="margin-row">
-                <label>
-                  <span className="label-title">Trái:</span>
+            {/* Phần Thiết lập Thông số */}
+            <div className="settings">
+              <label className="label">
+                <span className="label-title">Số bản:</span>
+                <input
+                  type="number"
+                  value={numberOfCopies}
+                  onChange={(e) => handleNumberChange(e, setNumberOfCopies)}
+                />
+              </label>
+              <label className="label">
+                <span className="label-title">Kích thước:</span>
+                <select value={pageSize} onChange={handlePageSizeChange}>
+                  <option>A3</option>
+                  <option>A4</option>
+                  <option>A5</option>
+                </select>
+              </label>
+              <label className="label">
+                <span className="label-title">In từ trang:</span>
+                <input
+                  type="number"
+                  value={fromPage}
+                  onChange={(e) => handleNumberChange(e, setFromPage)}
+                />
+              </label>
+              <label className="label">
+                <span className="label-title">Đến trang:</span>
+                <input
+                  type="number"
+                  value={toPage}
+                  onChange={(e) => handleNumberChange(e, setToPage)}
+                />
+              </label>
+
+              {/* Tiêu đề Hướng In */}
+              <div className="label">
+                <span className="label-title radio-group-title">Hướng in</span>
+                <div className="radio-group">
                   <input
-                    type="number"
-                    value={margins.left}
-                    onChange={(e) => handleNumberChange(e, (value) => setMargins({ ...margins, left: value }))}
+                    type="radio"
+                    id="doc"
+                    name="orientation"
+                    value="doc"
+                    checked={orientation === 'doc'}
+                    onChange={handleOrientationChange}
                   />
-                </label>
-                <label>
-                  <span className="label-title">Phải:</span>
+                  <label htmlFor="doc">Dọc</label>
                   <input
-                    type="number"
-                    value={margins.right}
-                    onChange={(e) => handleNumberChange(e, (value) => setMargins({ ...margins, right: value }))}
+                    type="radio"
+                    id="ngang"
+                    name="orientation"
+                    value="ngang"
+                    checked={orientation === 'ngang'}
+                    onChange={handleOrientationChange}
                   />
-                </label>
+                  <label htmlFor="ngang">Ngang</label>
+                </div>
               </div>
-              <div className="margin-row">
-                <label>
-                  <span className="label-title">Trên:</span>
-                  <input
-                    type="number"
-                    value={margins.top}
-                    onChange={(e) => handleNumberChange(e, (value) => setMargins({ ...margins, top: value }))}
-                  />
-                </label>
-                <label>
-                  <span className="label-title">Dưới:</span>
-                  <input
-                    type="number"
-                    value={margins.bottom}
-                    onChange={(e) => handleNumberChange(e, (value) => setMargins({ ...margins, bottom: value }))}
-                  />
-                </label>
+
+              {/* Phần Canh Lề */}
+              <div className="margin-settings">
+                <div className="margin-settings-title">Canh lề (inch)</div>
+                <div className="margin-row">
+                  <label>
+                    <span className="label-title">Trái:</span>
+                    <input
+                      type="number"
+                      value={margins.left}
+                      onChange={(e) => handleNumberChange(e, (value) => setMargins({ ...margins, left: value }))}
+                    />
+                  </label>
+                  <label>
+                    <span className="label-title">Phải:</span>
+                    <input
+                      type="number"
+                      value={margins.right}
+                      onChange={(e) => handleNumberChange(e, (value) => setMargins({ ...margins, right: value }))}
+                    />
+                  </label>
+                </div>
+                <div className="margin-row">
+                  <label>
+                    <span className="label-title">Trên:</span>
+                    <input
+                      type="number"
+                      value={margins.top}
+                      onChange={(e) => handleNumberChange(e, (value) => setMargins({ ...margins, top: value }))}
+                    />
+                  </label>
+                  <label>
+                    <span className="label-title">Dưới:</span>
+                    <input
+                      type="number"
+                      value={margins.bottom}
+                      onChange={(e) => handleNumberChange(e, (value) => setMargins({ ...margins, bottom: value }))}
+                    />
+                  </label>
+                </div>
               </div>
             </div>
           </div>
-        </div>
 
-        {/* Phần Lưu tài liệu */}
-        <div className="save-option">
-          <input type="checkbox" id="save-doc" />
-          <label htmlFor="save-doc">Lưu tài liệu in trong 7 ngày</label>
-        </div>
+          {/* Phần Lưu tài liệu */}
+          <div className="save-option">
+            <input type="checkbox" id="save-doc" />
+            <label htmlFor="save-doc">Lưu tài liệu in trong 7 ngày</label>
+          </div>
 
-        {/* Các nút hành động */}
-        <div className="buttons">
-          <button>Xác nhận</button>
-          <button>Quay lại</button>
+          {/* Các nút hành động */}
+          <div className="buttons">
+            <button>Xác nhận</button>
+            <button>Quay lại</button>
+          </div>
         </div>
       </div>
-    </div>
+      
+      <Footer />
+    </>
   );
 };
 

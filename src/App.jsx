@@ -12,6 +12,8 @@ import UploadFile from "./components/app/upload/UploadFile";
 import Printer from "./components/app/upload/Printer";
 import Printsetting from "./components/app/Printsetting/PrintSettings"
 import ConfirmPrint from "./components/app/ConfirmPrint/ConfirmPrint.jsx"
+import TransactionManagement from "./components/app/Employee/TransactionManagement.jsx";
+
 const router = createBrowserRouter([
   {
     path: '/',
@@ -46,6 +48,11 @@ const router = createBrowserRouter([
   {
     path: '/confirm',
     element: <ConfirmPrint />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: '/employee/management/transaction',
+    element: <TransactionManagement />,
     errorElement: <ErrorPage />,
   }
 ]);

@@ -1,6 +1,6 @@
 
 import React from "react";
-import Header from "../../layout/Header";
+import Header from "../../layout/Nav";
 import Footer from "../../layout/Footer";
 import PrinterImg from '../../../assets/images/logo-new.png';
 
@@ -45,7 +45,7 @@ const Printer = () => {
         </label>
       </div>
       
-      <div className="tw-overflow-auto tw-rounded-lg tw-shadow-md tw-border tw-mt-2 tw-bg-scroll tw-h-60">
+      <div className="tw-overflow-auto tw-rounded-lg tw-shadow-md tw-border tw-mt-2 tw-bg-scroll tw-h-50">
         <table className="tw-min-w-full tw-border tw-rounded-lg">
           <thead className="tw-bg-gray-100">
             <tr>
