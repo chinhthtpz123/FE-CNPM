@@ -1,26 +1,44 @@
-import React, { useRef, useState } from 'react';
+import  { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FaRegTrashCan } from "react-icons/fa6";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { AiOutlineClose, AiOutlineCheckCircle, AiOutlineHistory } from 'react-icons/ai';
 import Nav from '../../layout/Nav';
+import axios from 'axios';
 
-const apiUploadedFile = [
-  { id: 1, name: 'file1.txt', size: 10, },
-  { id: 2, name: 'file2.txt', size: 20, },
-  { id: 3, name: 'file3.txt', size: 30, },
-]
+
 
 const FileUpload = () => {
   const [files, setFiles] = useState([]);
-  const [uploadedFile, setUploadedFile] = useState(apiUploadedFile);
+  const [uploadedFile, setUploadedFile] = useState([]);
+  const [newFilesUpload, setNewFilesUpload] = useState([]);
   const fileInputRef = useRef(null);
+
+  useEffect(()=>{
+    const fetchDocmuments = async ()=>{
+      const api = "http://localhost:8080/customers/documents";
+      const token = "eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3MzMxNDA2NTcsInN1YiI6IjY4Y2Y3MzFmLTI5NDYtNGIzYi05YjgwLTUzNDA1NWMxMTQyYiIsInNjb3BlIjoiY3VzdG9tZXIifQ.dz_Ib5uo1J5ffk2jq4xCJZCMtxJ1wDW5jUSnmo5xgFk";
+      const res = await axios.get(api,{
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      });
+      if(res.status ==200) {
+        setUploadedFile(res.data.data.map((document)=>({
+          id: document.id.value,
+          name: document.name,
+        })));
+      } else {
+        alert(res.data.message);
+      }
+    }
+    fetchDocmuments();
+  },[]);
 
   const handleFiles = (event) => {
     const selectedFiles = Array.from(event.target.files);
     uploadFiles(selectedFiles);
     event.target.value = null;
-    
   };
 
   const handleDrop = (event) => {
@@ -31,6 +49,7 @@ const FileUpload = () => {
   };
 
   const uploadFiles = (filesToUpload) => {
+    setNewFilesUpload([...newFilesUpload,...filesToUpload]);
     const newFiles = filesToUpload.map((file) => ({
       name: file.name,
       size: file.size,
@@ -167,7 +186,7 @@ const FileUpload = () => {
           ))}
           <div className='tw-flex tw-items-center tw-justify-center'>
             <button className='tw-flex tw-mx-auto tw-text-customBlue tw-bg-white tw-border tw-rounded-md tw-border-solid tw-p-1'>
-              <Link to='/upload/printer'>Confirm</Link>
+              <Link to='/upload/printer' state={{newFilesUpload}}>Confirm</Link>
             </button>
           </div>
         </div>

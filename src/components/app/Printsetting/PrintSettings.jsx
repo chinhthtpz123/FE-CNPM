@@ -1,9 +1,14 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import Header from '../../layout/Nav';
 import Footer from '../../layout/Footer';
 import '../../../input.css';
+import { useLocation } from 'react-router-dom';
 
 const PrintSettings = () => {
+  const location = useLocation();
+  const {newFilesUpload=[], printerId=""} =location.state;
+  console.log(newFilesUpload);
+  console.log(printerId);
   const [orientation, setOrientation] = useState('doc');
   const [pageSize, setPageSize] = useState('A4');
   const [numberOfCopies, setNumberOfCopies] = useState(1);
