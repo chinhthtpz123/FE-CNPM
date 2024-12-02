@@ -17,8 +17,6 @@ const Nav = () => {
   const toggleSidebar = () => {
     setHiddenSidebar(!hiddenSidebar)
   }
-
-  console.log(getWidth.current);  
   
   return (
     <>
@@ -114,7 +112,7 @@ const Nav = () => {
       </div>
     </nav>
     
-    {!hiddenSidebar && <Sidebar />}
+    {hiddenSidebar && <Sidebar />}
   </>
 
 )};
