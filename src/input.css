@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
 .tw-line-after::after {
   position: absolute;
   left: 0;
@@ -20,7 +19,7 @@
       rgba(255, 255, 255, 0.8),
       rgba(255, 255, 255, 0.8)
     ),
-    url("../public/iamges/pngtree-abstract-blue-wavy-header-flyer-and-business-wave-border-frame-banner-png-image_8749686.png");
+    url("../public/images/pngtree-abstract-blue-wavy-header-flyer-and-business-wave-border-frame-banner-png-image_8749686.png");
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
@@ -32,7 +31,6 @@
   padding: 30px;
   border-radius: 20px; /* Bo góc mềm mại */
   max-width: 700px;
-  margin: 30px auto;
   box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.1);
 }
 
