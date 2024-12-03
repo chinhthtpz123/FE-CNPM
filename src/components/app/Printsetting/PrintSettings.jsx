@@ -2,62 +2,37 @@
 import  { useState } from 'react';
 import Header from '../../layout/Nav';
 import imageHcmut from '../../../../public/images/HCMUT-BachKhoa-logo.png';
-import { useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import { useTransactionStore } from './PrintTransactionStore';
 
 
 
-const files = [
-  { id: 1, name: 'file1.txt', size: 1024 },
-  { id: 2, name: "file2.txt", size: 1024},
-]
+
 
 const PrintSettings = () => {
-  const location = useLocation();
-  const {newFilesUpload=[], printerId=""} =location.state;
-  console.log(newFilesUpload);
-  console.log(printerId);
-  const [orientation, setOrientation] = useState('doc');
-  const [pageSize, setPageSize] = useState('A4');
-  const [numberOfCopies, setNumberOfCopies] = useState(1);
-  const [fromPage, setFromPage] = useState(1);
-  const [toPage, setToPage] = useState(10);
-  const [margins, setMargins] = useState({ left: 0, right: 0, top: 0, bottom: 0 });
-  const [activeFile, setActiveFile] = useState(files[0].name);
-
-  const handleNumberChange = (e, setter) => {
-    const value = Math.max(0, e.target.value); // Không cho phép số nhỏ hơn 0
-    setter(value);
-  };
-
-  const handleOrientationChange = (e) => {
-    setOrientation(e.target.value);
-  };
-
-  const handlePageSizeChange = (e) => {
-    setPageSize(e.target.value);
-  };
-
-  const handleOnClick= (item) => {
-    setActiveFile(item.name);
-  }
-
+  const {newDocuments,updateDocumentSetting} = useTransactionStore();
+  const[currentFileIdx, setCurrentFileIdx] = useState(0);
+  console.log(currentFileIdx);
+  const selectedFile = newDocuments[currentFileIdx].metadata.detail;
+ console.log(selectedFile.numOfCopies);
+  
   return (
     <>
      <Header />
      <div className="tw-flex tw-ml-[240px] tw-mt-[73px]">
       <div className="tw-border tw-border-gray-200 tw-h-full tw-shadow-md tw-mt-12 tw-p-4 tw-rounded-lg">
         <div className="tw-text-2xl tw-font-medium tw-text-customBlue tw-mb-3">Danh sach file</ div>
-        {files && files.length > 0 && files.map((item, index) => {
+        {newDocuments && newDocuments.length > 0 && newDocuments.map((item, index) => {
           return (
             <div key={index} 
-              className={activeFile === item.name ? "tw-flex tw-items-center tw-justify-between tw-min-w-max tw-p-2 tw-space-x-3 tw-bg-blue-50 tw-text-blue-500 tw-rounded-md" :
+              className={currentFileIdx === index ? "tw-flex tw-items-center tw-justify-between tw-min-w-max tw-p-2 tw-space-x-3 tw-bg-blue-50 tw-text-blue-500 tw-rounded-md" :
                 "tw-flex tw-items-center tw-justify-between tw-w-full tw-space-x-3 tw-p-2 tw-text-gray-700"
               }>
-              <p className={activeFile === item.name ? "tw-block tw-text-lg tw-mb-0 tw-text-blue-500" :
+              <p className={currentFileIdx === index ? "tw-block tw-text-lg tw-mb-0 tw-text-blue-500" :
                 "tw-block tw-text-lg tw-mb-0 tw-text-gray-700"
-              }>{item.name}</p>
+              }>{item.metadata.name}</p>
               <button className="tw-p-2 tw-border tw-border-gray-200 tw-rounded-md"
-                onClick={() => handleOnClick(item)}>Chon file </button> 
+                onClick={() => setCurrentFileIdx(index)}>Chon file </button> 
             </div>
           )
         })}
@@ -70,7 +45,7 @@ const PrintSettings = () => {
             {/* Phần Xem Trước */}
             <div className="preview">
               <div className="preview-label">Xem trước</div>
-              <div className={`preview-box ${orientation}`} />
+              <div className={`preview-box ${selectedFile.isLandscape?'ngang':'doc'}`} />
               <img className="preview-logo" src={imageHcmut} alt="Logo" />
             </div>
 
@@ -80,13 +55,17 @@ const PrintSettings = () => {
                 <span className="label-title">Số bản:</span>
                 <input
                   type="number"
-                  value={numberOfCopies}
-                  onChange={(e) => handleNumberChange(e, setNumberOfCopies)}
+                  value={selectedFile.numOfCopies}
+                  onChange={(e) =>
+                    updateDocumentSetting(currentFileIdx,"numOfCopies",Math.max(1, e.target.value),true)
+                  }
                 />
               </label>
               <label className="label">
-                <span className="label-title">Kích thước:</span>
-                <select value={pageSize} onChange={handlePageSizeChange}>
+                <span className="label-title">Loại giấy:</span>
+                <select value={selectedFile.paperType} onChange={(e) =>
+                    updateDocumentSetting(currentFileIdx,"paperType",e.target.value,true)
+                  }>
                   <option>A3</option>
                   <option>A4</option>
                   <option>A5</option>
@@ -96,16 +75,20 @@ const PrintSettings = () => {
                 <span className="label-title">In từ trang:</span>
                 <input
                   type="number"
-                  value={fromPage}
-                  onChange={(e) => handleNumberChange(e, setFromPage)}
+                  value={selectedFile.fromPage}
+                  onChange={(e) =>
+                    updateDocumentSetting(currentFileIdx,"fromPage",Math.max(1, e.target.value),true)
+                  }
                 />
               </label>
               <label className="label">
                 <span className="label-title">Đến trang:</span>
                 <input
                   type="number"
-                  value={toPage}
-                  onChange={(e) => handleNumberChange(e, setToPage)}
+                  value={selectedFile.toPage}
+                  onChange={(e) =>
+                    updateDocumentSetting(currentFileIdx,"toPage",Math.max(1, e.target.value),true)
+                  }
                 />
               </label>
 
@@ -118,8 +101,10 @@ const PrintSettings = () => {
                     id="doc"
                     name="orientation"
                     value="doc"
-                    checked={orientation === 'doc'}
-                    onChange={handleOrientationChange}
+                    checked={selectedFile.isLandscape === false}
+                    onChange={() =>
+                      updateDocumentSetting(currentFileIdx,"isLandscape",false,true)
+                    }
                   />
                   <label htmlFor="doc">Dọc</label>
                   <input
@@ -127,8 +112,9 @@ const PrintSettings = () => {
                     id="ngang"
                     name="orientation"
                     value="ngang"
-                    checked={orientation === 'ngang'}
-                    onChange={handleOrientationChange}
+                    checked={selectedFile.isLandscape === true}
+                    onChange={() =>
+                      updateDocumentSetting(currentFileIdx,"isLandscape",true,true)}
                   />
                   <label htmlFor="ngang">Ngang</label>
                 </div>
@@ -142,16 +128,21 @@ const PrintSettings = () => {
                     <span className="label-title">Trái:</span>
                     <input
                       type="number"
-                      value={margins.left}
-                      onChange={(e) => handleNumberChange(e, (value) => setMargins({ ...margins, left: value }))}
+                      value={selectedFile.leftSide}
+                      onChange={(e) =>
+                        updateDocumentSetting(currentFileIdx,"leftSide",Math.max(1, e.target.value),true)
+
+                      }
                     />
                   </label>
                   <label>
                     <span className="label-title">Phải:</span>
                     <input
                       type="number"
-                      value={margins.right}
-                      onChange={(e) => handleNumberChange(e, (value) => setMargins({ ...margins, right: value }))}
+                      value={selectedFile.rightSide}
+                      onChange={(e) =>
+                        updateDocumentSetting(currentFileIdx,"rightSide",Math.max(1, e.target.value),true)
+                      }
                     />
                   </label>
                 </div>
@@ -160,16 +151,20 @@ const PrintSettings = () => {
                     <span className="label-title">Trên:</span>
                     <input
                       type="number"
-                      value={margins.top}
-                      onChange={(e) => handleNumberChange(e, (value) => setMargins({ ...margins, top: value }))}
+                      value={selectedFile.topSide}
+                      onChange={(e) =>
+                        updateDocumentSetting(currentFileIdx,"topSide",Math.max(1, e.target.value),true)
+                      }
                     />
                   </label>
                   <label>
                     <span className="label-title">Dưới:</span>
                     <input
                       type="number"
-                      value={margins.bottom}
-                      onChange={(e) => handleNumberChange(e, (value) => setMargins({ ...margins, bottom: value }))}
+                      value={selectedFile.bottomSide}
+                      onChange={(e) =>
+                        updateDocumentSetting(currentFileIdx,"bottomSide",Math.max(1, e.target.value),true)
+                      }
                     />
                   </label>
                 </div>
@@ -185,7 +180,9 @@ const PrintSettings = () => {
 
           {/* Các nút hành động */}
           <div className="buttons">
-            <button>Xác nhận</button>
+            <button>
+              <Link to={'/confirm'}>Xác nhận</Link>
+            </button>
             <button>Quay lại</button>
           </div>
         </div>

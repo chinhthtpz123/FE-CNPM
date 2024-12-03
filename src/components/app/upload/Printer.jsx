@@ -2,21 +2,22 @@
 import Header from "../../layout/Nav";
 import Footer from "../../layout/Footer";
 import PrinterImg from '../../../assets/images/logo-new.png';
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { token } from "../../../utils";
+import { useTransactionStore } from "../Printsetting/PrintTransactionStore";
 
 
 
 const Printer = () => {
-  const location = useLocation();
-  const{newFilesUpload=[]} = location.state||{};
+  const{newDocuments=[]} = useTransactionStore();
+  console.log(newDocuments);
   const [printerList,setPrinterList] = useState([]);
-  const [selectedPrinterId,setSelectedPrinterId] = useState("");
+  const {setPrinter} = useTransactionStore();
   useEffect(()=>{
     const fetchPrinterList = async ()=>{
       const api = "http://localhost:8080/printers";
-      const token = "eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3MzMxNDIwMTYsInN1YiI6IjY4Y2Y3MzFmLTI5NDYtNGIzYi05YjgwLTUzNDA1NWMxMTQyYiIsInNjb3BlIjoiY3VzdG9tZXIifQ.mDZybqSkNkXcCuAy28jfz5ySU_cGsPSZX7sc0YlluxY";
       const page = 1;
       const size = 10;
       const res = await axios.get(api, {
@@ -92,7 +93,7 @@ const Printer = () => {
                   </span>
                 </td>
                 <td className="tw-px-6 tw-py-3">
-                  <label className="tw-flex tw-items-center" onClick={()=>{setSelectedPrinterId(printer.id)}}>
+                  <label className="tw-flex tw-items-center" onClick={()=>{setPrinter(printer.id)}}>
                     <input type="radio" name="printer" className="tw-mr-2" />
                     Xác nhận
                   </label>
@@ -106,7 +107,7 @@ const Printer = () => {
       <div className="tw-flex tw-space-x-9 tw-items-center tw-justify-center tw-mt-8 ">
         <button className="tw-border tw-border-gray-100 tw-rounded-md tw-text-customBlue tw-bg-white tw-p-1">Quay lại</button>
         <button className="tw-border tw-border-gray-100 tw-rounded-md tw-text-customBlue tw-bg-white tw-p-1">
-          <Link to={"/printsetting"} state={{newFilesUpload,printerId: selectedPrinterId}}>Xác Nhận</Link>
+          <Link to={"/printsetting"}>Xác Nhận</Link>
           </button>
       </div>
     </div>

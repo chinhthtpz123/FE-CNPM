@@ -1,8 +1,7 @@
 
-import * as ReactDOM from "react-dom/client";
 import {
   // BrowserRouter, Routes, Route
-  createBrowserRouter, Outlet, RouterProvider,
+  createBrowserRouter, RouterProvider,
 } from "react-router-dom";
 import HomePage from './components/HomePage'
 import ErrorPage from "./components/errors/ErrorPage";

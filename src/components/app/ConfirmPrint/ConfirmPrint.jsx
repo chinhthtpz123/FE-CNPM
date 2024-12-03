@@ -1,13 +1,53 @@
-import React from "react";
+import axios from 'axios';
 import '../../../input.css';
+import { useTransactionStore } from '../Printsetting/PrintTransactionStore';
+import { token } from '../../../utils';
+import { useNavigate } from 'react-router-dom';
 
 const TransactionConfirmation = () => {
-  const files = [
-    { name: "Software-Engineer-document.pdf", size: "100 KB", pages: 100, status: "Valid" },
-    { name: "Database-System-document.pdf", size: "30 MB", pages: 20, status: "Invalid" },
-    { name: "Web-Programming-document.pdf", size: "100 MB", pages: 50, status: "" },
-  ];
+  const {newDocuments, name, printerId,oldDocuments} = useTransactionStore();
+  const naigate = useNavigate();
+  const files = newDocuments.map((document)=>({
+    name: document.metadata.name,
+    paperType: document.metadata.detail.paperType,
+    numOfCopies: document.metadata.detail.numOfCopies,
+    save: true,
+  }));
+  const handleCreateTransaction = async ()=>{
+    const createTransaction = async() =>{
+      const api = "http://localhost:8080/transactions/create";
+      const body= {
+        printerId,
+        name,
+        newDocuments: newDocuments.map((document)=>document.metadata),
+        oldDocuments:oldDocuments.map((document)=>document.metadata),
+      }
+      const res = await axios.post(api,body,{
+        headers:{
+          Authorization: `Bearer ${token}`
+        }
+      });
+      if(res.status === 201){
+        await  Promise.all(newDocuments.map(async (document,idx) =>{
+          const formData = new FormData();
+          formData.append("file",document.file);
+          console.log(document.file.size);
+          await axios.put(res.data.data.urls[idx],formData,{
+            headers: {
+              "Content-Type": "multipart/form-data", // Adjust based on file type
+              // "Content-Length": document.file.size, // Set Content-Length explicitly
+            },
+          });
+        }));
+        console.log("sucesssssss");
 
+      } else {
+        console.log("Faileddd");
+      }
+    }
+    await createTransaction();
+    window.location.href="http://localhost:3000/upload"
+  }
   return (
     <div className="transaction-confirmation-page">
       <div className="container">
@@ -19,26 +59,26 @@ const TransactionConfirmation = () => {
           <thead>
             <tr>
               <th>Tên tài liệu</th>
-              <th>Kích thước</th>
-              <th>Số trang</th>
-              <th>Hợp lệ</th>
+              <th>Loại giấy</th>
+              <th>Số bản</th>
+              <th>Lưu</th>
             </tr>
           </thead>
           <tbody>
             {files.map((file, index) => (
               <tr key={index}>
                 <td><a href="#">{file.name}</a></td>
-                <td>{file.size}</td>
-                <td>{file.pages}</td>
-                <td className={file.status === "Valid" ? "status-valid" : file.status === "Invalid" ? "status-invalid" : "status-na"}>
-                  {file.status === "Valid" ? "Valid" : file.status === "Invalid" ? "Invalid" : "N/A"}
+                <td>{file.paperType}</td>
+                <td>{file.numOfCopies}</td>
+                <td className={file.save ? "status-valid" : !file.save ? "status-invalid" : "status-na"}>
+                  {file.save ? "Yes" : !file.save ? "No" : "N/A"}
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
         <div className="buttons">
-          <button>Xác nhận</button>
+          <button onClick={handleCreateTransaction}>Xác nhận</button>
           <button>Quay lại</button>
         </div>
       </div>
