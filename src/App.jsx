@@ -12,6 +12,10 @@ import Printer from "./components/app/upload/Printer";
 import Printsetting from "./components/app/Printsetting/PrintSettings"
 import ConfirmPrint from "./components/app/ConfirmPrint/ConfirmPrint.jsx"
 import TransactionManagement from "./components/app/Employee/TransactionManagement.jsx";
+import AfterLogin from "./components/app/AfterLogin/AfterLogin.jsx";
+import ChoosePaper from "./components/app/BuyPaper/ChoosePaper.jsx";
+import PaperShop from "./components/app/BuyPaper/PaperShop.jsx";
+
 
 const router = createBrowserRouter([
   {
@@ -52,6 +56,21 @@ const router = createBrowserRouter([
   {
     path: '/employee/management/transaction',
     element: <TransactionManagement />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: '/afterlogin',
+    element: <AfterLogin />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: '/choosepaper',
+    element: <ChoosePaper />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: '/papershop',
+    element: <PaperShop />,
     errorElement: <ErrorPage />,
   }
 ]);
