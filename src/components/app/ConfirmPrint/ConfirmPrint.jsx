@@ -2,11 +2,9 @@ import axios from 'axios';
 import '../../../input.css';
 import { useTransactionStore } from '../Printsetting/PrintTransactionStore';
 import { token } from '../../../utils';
-import { useNavigate } from 'react-router-dom';
 
 const TransactionConfirmation = () => {
   const {newDocuments, name, printerId,oldDocuments} = useTransactionStore();
-  const naigate = useNavigate();
   const files = newDocuments.map((document)=>({
     name: document.metadata.name,
     paperType: document.metadata.detail.paperType,
