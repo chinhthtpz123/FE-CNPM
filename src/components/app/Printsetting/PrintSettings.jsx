@@ -17,7 +17,7 @@ const PrintSettings = () => {
   const selectedFile = newDocuments[currentFileIdx].metadata.detail;
  
   const handleOnClick = () => {
-    navigate('/uploadq/confirm', {replace: true});
+    navigate('/upload/confirm', {replace: true});
   }
 
   const handleOnBackPage = () => {

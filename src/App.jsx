@@ -3,7 +3,7 @@ import {
   // BrowserRouter, Routes, Route
   createBrowserRouter, RouterProvider,
 } from "react-router-dom";
-import HomePage from './components/HomePage'
+import HomePage from './components/HomePage';
 import ErrorPage from "./components/errors/ErrorPage";
 import LoginPage from "./components/login/LoginPage";
 import Home from "./components/app/Home";
@@ -16,6 +16,9 @@ import AfterLogin from "./components/app/AfterLogin/AfterLogin.jsx";
 import ChoosePaper from "./components/app/BuyPaper/ChoosePaper.jsx";
 import PaperShop from "./components/app/BuyPaper/PaperShop.jsx";
 
+// import PrinterTransaction from "./components/app/transaction/PrinterTransaction.jsx";
+import PrintManagement from "./components/app/PrintManagement/PrintManagement.jsx";
+import PrintManagementCus from "./components/app/PrintManagement/PrintManagement-Cus.jsx";
 
 const router = createBrowserRouter([
   {
@@ -71,6 +74,15 @@ const router = createBrowserRouter([
   {
     path: '/papershop',
     element: <PaperShop />,
+  },
+  {
+    path: '/management',
+    element: <PrintManagement />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: '/managementcus',
+    element: <PrintManagementCus />,
     errorElement: <ErrorPage />,
   }
 ]);
