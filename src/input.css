@@ -13,7 +13,9 @@
   width: 100%;
   background-color: #d1d5db;
 }
-
+body {
+  font-family: 'Roboto', sans-serif;
+}
 /* Trang cài đặt in */
 .print-settings-page .print-settings {
   background-image: linear-gradient(
@@ -373,3 +375,152 @@
   transform: translateY(0);
   box-shadow: none;
 }
+
+.printer-transaction-wrapper {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+}
+
+.printer-transaction-wrapper .printer-list-page,
+.printer-transaction-wrapper .transaction-page {
+  padding: 20px;
+}
+
+.printer-transaction-wrapper .printer-card {
+  border: 1px solid #ccc;
+  padding: 15px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.printer-transaction-wrapper .printer-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.printer-transaction-wrapper .printer-card h3 {
+  margin: 0 0 10px;
+}
+
+.printer-transaction-wrapper .printer-card p {
+  margin: 5px 0;
+}
+
+.printer-transaction-wrapper .printer-card button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.printer-transaction-wrapper .tabs button {
+  margin-right: 10px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  background-color: #f1f1f1;
+  cursor: pointer;
+}
+
+.printer-transaction-wrapper .tabs button.active {
+  background-color: #007bff;
+  color: white;
+}
+
+.printer-transaction-wrapper .transaction-list {
+  margin-top: 20px;
+}
+
+.printer-transaction-wrapper .transaction {
+  border: 1px solid #ddd;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+}
+
+.printer-transaction-wrapper .transaction button {
+  margin-top: 10px;
+  padding: 5px 10px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.printer-transaction-wrapper .transaction-detail {
+  margin-top: 20px;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+.printer-transaction-wrapper .transaction-detail h3 {
+  margin-bottom: 15px;
+}
+
+.printer-transaction-wrapper .transaction-detail p {
+  font-size: 16px;
+}
+
+.printer-transaction-wrapper .confirmed-icon {
+  color: green;
+  font-weight: bold;
+}
+
+/* Modal */
+.printer-transaction-wrapper .modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+}
+
+.printer-transaction-wrapper .modal-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  width: 400px;
+  position: relative;
+}
+
+.printer-transaction-wrapper .close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.printer-transaction-wrapper .modal-content h3 {
+  margin-top: 0;
+}
+
+.printer-transaction-wrapper .modal-content p {
+  margin: 10px 0;
+}
+
+.printer-transaction-wrapper .modal-content button {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+
+
+

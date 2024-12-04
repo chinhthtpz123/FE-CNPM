@@ -4,14 +4,17 @@ import {
   // BrowserRouter, Routes, Route
   createBrowserRouter, Outlet, RouterProvider,
 } from "react-router-dom";
-import HomePage from './components/HomePage'
+import HomePage from './components/HomePage';
 import ErrorPage from "./components/errors/ErrorPage";
 import LoginPage from "./components/login/LoginPage";
 import Home from "./components/app/Home";
 import UploadFile from "./components/app/upload/UploadFile";
 import Printer from "./components/app/upload/Printer";
-import Printsetting from "./components/app/Printsetting/PrintSettings"
-import ConfirmPrint from "./components/app/ConfirmPrint/ConfirmPrint.jsx"
+import Printsetting from "./components/app/Printsetting/PrintSettings";
+import ConfirmPrint from "./components/app/ConfirmPrint/ConfirmPrint.jsx";
+import PrinterList from "./components/app/transaction/PrinterList.jsx";
+import PrinterTransaction from "./components/app/transaction/PrinterTransaction.jsx";
+import PrintManagement from "./components/app/PrintManagement/PrintManagement.jsx";
 const router = createBrowserRouter([
   {
     path: '/',
@@ -46,6 +49,21 @@ const router = createBrowserRouter([
   {
     path: '/confirm',
     element: <ConfirmPrint />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: '/printerlist',
+    element: <PrinterList />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: '/printertransaction',
+    element: <PrinterTransaction />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: '/management',
+    element: <PrintManagement />,
     errorElement: <ErrorPage />,
   }
 ]);
