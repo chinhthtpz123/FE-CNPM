@@ -588,14 +588,6 @@ video {
   }
 }
 
-.tw-pointer-events-none {
-  pointer-events: none;
-}
-
-.tw-pointer-events-auto {
-  pointer-events: auto;
-}
-
 .tw-fixed {
   position: fixed;
 }
@@ -624,10 +616,6 @@ video {
   top: 0px;
 }
 
-.tw-left-0 {
-  left: 0px;
-}
-
 .tw-z-10 {
   z-index: 10;
 }
@@ -642,10 +630,6 @@ video {
 
 .tw-col-end-5 {
   grid-column-end: 5;
-}
-
-.tw-m-6 {
-  margin: 1.5rem;
 }
 
 .tw-mx-auto {
@@ -673,6 +657,10 @@ video {
 
 .tw-mb-6 {
   margin-bottom: 1.5rem;
+}
+
+.tw-ml-1 {
+  margin-left: 0.25rem;
 }
 
 .tw-ml-2 {
@@ -727,38 +715,6 @@ video {
   margin-top: 2rem;
 }
 
-.tw-ml-4 {
-  margin-left: 1rem;
-}
-
-.tw-mb-2 {
-  margin-bottom: 0.5rem;
-}
-
-.tw-ml-1 {
-  margin-left: 0.25rem;
-}
-
-.tw-ml-0 {
-  margin-left: 0px;
-}
-
-.tw-mb-5 {
-  margin-bottom: 1.25rem;
-}
-
-.tw-mb-9 {
-  margin-bottom: 2.25rem;
-}
-
-.tw-mb-10 {
-  margin-bottom: 2.5rem;
-}
-
-.tw-mb-7 {
-  margin-bottom: 1.75rem;
-}
-
 .tw-block {
   display: block;
 }
@@ -801,10 +757,6 @@ video {
 
 .tw-h-auto {
   height: auto;
-}
-
-.tw-h-full {
-  height: 100%;
 }
 
 .tw-max-h-min {
@@ -894,11 +846,6 @@ video {
   cursor: pointer;
 }
 
-.tw-scroll-px-0\.5 {
-  scroll-padding-left: 0.125rem;
-  scroll-padding-right: 0.125rem;
-}
-
 .tw-grid-cols-4 {
   grid-template-columns: repeat(4, minmax(0, 1fr));
 }
@@ -929,10 +876,6 @@ video {
 
 .tw-gap-8 {
   gap: 2rem;
-}
-
-.tw-gap-4 {
-  gap: 1rem;
 }
 
 .tw-space-x-4 > :not([hidden]) ~ :not([hidden]) {
@@ -1162,10 +1105,6 @@ video {
   padding: 1.5rem;
 }
 
-.tw-p-3 {
-  padding: 0.75rem;
-}
-
 .tw-px-2 {
   padding-left: 0.5rem;
   padding-right: 0.5rem;
@@ -1217,10 +1156,6 @@ video {
 
 .tw-text-center {
   text-align: center;
-}
-
-.tw-text-right {
-  text-align: right;
 }
 
 .tw-text-2xl {
@@ -1345,16 +1280,6 @@ video {
   color: rgb(255 255 255 / var(--tw-text-opacity, 1));
 }
 
-.tw-text-gray-600 {
-  --tw-text-opacity: 1;
-  color: rgb(75 85 99 / var(--tw-text-opacity, 1));
-}
-
-.tw-text-purple-500 {
-  --tw-text-opacity: 1;
-  color: rgb(168 85 247 / var(--tw-text-opacity, 1));
-}
-
 .tw-text-opacity-10 {
   --tw-text-opacity: 0.1;
 }
@@ -1402,558 +1327,16 @@ video {
 
 body {
   font-family: 'Roboto', sans-serif;
-}
-
-/* Trang cài đặt in */
-
-.print-settings-page .print-settings {
-  background-image: linear-gradient(
-      rgba(255, 255, 255, 0.8),
-      rgba(255, 255, 255, 0.8)
-    ),
-    url("C:/Users/thail/FE-CNPM/public/pngtree-abstract-blue-wavy-header-flyer-and-business-wave-border-frame-banner-png-image_8749686.png");
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #ffffff;
-  padding: 30px;
-  border-radius: 20px;
-  /* Bo góc mềm mại */
-  max-width: 700px;
-  margin: 30px auto;
-  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.1);
-}
-
-/* Tiêu đề */
-
-.print-settings-page .title {
-  color: #4a90e2;
-  margin-bottom: 25px;
-  font-size: 24px;
-  font-weight: 600;
-  text-align: center;
-  width: 100%;
-  letter-spacing: 1px;
-}
-
-/* Container chính */
-
-.print-settings-page .container {
-  display: flex;
-  width: 100%;
-  gap: 20px;
-  padding: 20px;
-  border-top: 1px solid #e0e0e0;
-  border-bottom: 1px solid #e0e0e0;
-  margin-top: 20px;
-}
-
-/* Phần preview */
-
-.print-settings-page .preview {
-  flex: 1;
-  text-align: center;
-  margin-right: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.print-settings-page .preview-label {
-  color: #4a90e2;
-  font-weight: bold;
-  margin-bottom: 10px;
-  font-size: 16px;
-}
-
-.print-settings-page .preview-box {
-  width: 160px;
-  height: 220px;
-  border: 1px solid #ddd;
-  background-color: #f4f4f4;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 12px;
-  /* Bo góc mềm mại */
-}
-
-.print-settings-page .preview-logo {
-  margin-top: 20px;
-  max-width: 220px;
-  height: auto;
-  opacity: 0.9;
-}
-
-/* Phần cài đặt */
-
-.print-settings-page .settings {
-  flex: 2;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  width: 100%;
-}
-
-/* Các label */
-
-.print-settings-page .label {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  margin: 15px 0;
-  font-size: 16px;
-  color: #333;
-}
-
-.print-settings-page .label-title {
-  color: #4a90e2;
-  font-weight: 600;
-  margin-right: 15px;
-  width: 160px;
-}
-
-.print-settings-page .label > input,
-.print-settings-page .label > select,
-.print-settings-page .margin-settings input {
-  padding: 12px 18px;
-  font-size: 16px;
-  border-radius: 20px;
-  /* Bo góc mềm mại */
-  border: 1px solid #ddd;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.05);
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
-  width: 160px;
-}
-
-.print-settings-page .label > input:focus,
-.print-settings-page .label > select:focus,
-.print-settings-page .margin-settings input:focus {
-  border-color: #4a90e2;
-  box-shadow: 0px 4px 12px rgba(0, 123, 255, 0.2);
-}
-
-/* Các radio button */
-
-.print-settings-page .radio-group-title {
-  font-size: 16px;
-  font-weight: bold;
-  color: #4a90e2;
-  margin-bottom: 10px;
-}
-
-.print-settings-page .radio-group {
-  display: flex;
-  gap: 20px;
-  margin: 15px 0;
-  align-items: center;
-}
-
-/* Các cài đặt margin */
-
-.print-settings-page .margin-settings {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-}
-
-.print-settings-page .margin-settings-title {
-  font-size: 16px;
-  font-weight: 600;
-  color: #4a90e2;
-  margin-bottom: 10px;
-}
-
-.print-settings-page .margin-row {
-  display: flex;
-  gap: 20px;
-  margin-bottom: 10px;
-}
-
-/* Các nút */
-
-.print-settings-page .buttons {
-  display: flex;
-  gap: 20px;
-  margin-top: 25px;
-  justify-content: center;
-  width: 100%;
-}
-
-.print-settings-page button {
-  padding: 14px 28px;
-  border: none;
-  background: linear-gradient(135deg, #4a90e2, #3a7cae);
-  color: white;
-  cursor: pointer;
-  border-radius: 30px;
-  /* Bo góc mềm mại */
-  font-size: 16px;
-  font-weight: 600;
-  transition: all 0.3s ease;
-  box-shadow: 0px 8px 15px rgba(0, 123, 255, 0.15);
-}
-
-.print-settings-page button:hover {
-  background: linear-gradient(135deg, #3a7cae, #2a5c7a);
-  box-shadow: 0px 12px 20px rgba(0, 86, 179, 0.2);
-  transform: translateY(-4px);
-}
-
-.print-settings-page button:active {
-  transform: translateY(0);
-  box-shadow: none;
-}
-
-/* Tùy chọn lưu */
-
-.print-settings-page .save-option {
-  text-align: center;
-  margin-top: 25px;
-}
-
-.print-settings-page .save-option label {
-  font-style: italic;
-  color: #4a90e2;
-  font-size: 14px;
-}
-
-/* Xoay trang */
-
-.print-settings-page .preview-box.doc {
-  transform: rotate(0deg);
-}
-
-.print-settings-page .preview-box.ngang {
-  transform: rotate(90deg);
-}
-
-/* Trang xác nhận giao dịch */
-
-.transaction-confirmation-page {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #f7f9fc;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-}
-
-.transaction-confirmation-page .container {
-  background-image: linear-gradient(
-      rgba(255, 255, 255, 0.8),
-      rgba(255, 255, 255, 0.8)
-    ),
-    url("C:/Users/thail/FE-CNPM/public/pngtree-abstract-blue-wavy-header-flyer-and-business-wave-border-frame-banner-png-image_8749686.png");
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
-  border-radius: 20px;
-  /* Bo góc mềm mại */
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
-  padding: 30px;
-  max-width: 650px;
-  width: 100%;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-/* Tiêu đề chính */
-
-.transaction-confirmation-page h1 {
-  font-size: 28px;
-  font-weight: 600;
-  color: #4a90e2;
-  /* Màu xanh dịu */
-  margin-bottom: 15px;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-
-/* Các phần văn bản (thời gian, danh sách file) */
-
-.transaction-confirmation-page p {
-  color: #333;
-  font-size: 16px;
-  line-height: 1.6;
-  margin: 5px 0;
-  font-weight: 400;
-}
-
-/* Định dạng bảng */
-
-.transaction-confirmation-page table {
-  width: 100%;
-  border-collapse: separate;
-  border-spacing: 0 10px;
-  margin: 20px 0;
-}
-
-.transaction-confirmation-page th,
-.transaction-confirmation-page td {
-  padding: 12px 15px;
-  border-radius: 8px;
-  text-align: center;
-  background-color: #f9fafb;
-  /* Màu nền nhẹ cho các ô */
-}
-
-.transaction-confirmation-page th {
-  background-color: #e1efff;
-  color: #4a90e2;
-  font-weight: 600;
-}
-
-.transaction-confirmation-page td {
-  font-size: 14px;
-  color: #555;
-}
-
-/* Hiệu ứng khi di chuột qua các dòng bảng */
-
-.transaction-confirmation-page tr:hover {
-  background-color: #f1faff;
-  /* Màu nền nhẹ khi hover */
-  cursor: pointer;
-}
-
-/* Liên kết trong bảng */
-
-.transaction-confirmation-page a {
-  color: #4a90e2;
-  text-decoration: none;
-  transition: color 0.3s ease;
-}
-
-.transaction-confirmation-page a:hover {
-  color: #0056b3;
-  text-decoration: underline;
-}
-
-/* Trạng thái hợp lệ */
-
-.transaction-confirmation-page .status-valid {
-  color: #28a745;
-  font-weight: bold;
-}
-
-.transaction-confirmation-page .status-invalid {
-  color: #dc3545;
-  font-weight: bold;
-}
-
-.transaction-confirmation-page .status-na {
-  color: #6c757d;
-  font-weight: bold;
-}
-
-/* Các nút */
-
-.transaction-confirmation-page .buttons {
-  display: flex;
-  gap: 20px;
-  justify-content: center;
-  width: 100%;
-  margin-top: 20px;
-}
-
-.transaction-confirmation-page button {
-  padding: 14px 30px;
-  border: none;
-  background: linear-gradient(135deg, #4a90e2, #3a7cae);
-  color: white;
-  cursor: pointer;
-  border-radius: 30px;
-  /* Bo góc mềm mại */
-  font-size: 16px;
-  font-weight: 600;
-  transition: all 0.3s ease;
-  box-shadow: 0 6px 12px rgba(0, 123, 255, 0.15);
-}
-
-.transaction-confirmation-page button:hover {
-  background: linear-gradient(135deg, #3a7cae, #2a5c7a);
-  box-shadow: 0 8px 16px rgba(0, 86, 179, 0.2);
-  transform: translateY(-4px);
-}
-
-.transaction-confirmation-page button:active {
-  transform: translateY(0);
-  box-shadow: none;
-}
-
-.printer-transaction-wrapper {
-  font-family: Arial, sans-serif;
-  padding: 20px;
-}
-
-.printer-transaction-wrapper .printer-list-page,
-.printer-transaction-wrapper .transaction-page {
-  padding: 20px;
-}
-
-.printer-transaction-wrapper .printer-card {
-  border: 1px solid #ccc;
-  padding: 15px;
-  margin-bottom: 10px;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.printer-transaction-wrapper .printer-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-}
-
-.printer-transaction-wrapper .printer-card h3 {
-  margin: 0 0 10px;
-}
-
-.printer-transaction-wrapper .printer-card p {
-  margin: 5px 0;
-}
-
-.printer-transaction-wrapper .printer-card button {
-  background-color: #007bff;
-  color: white;
-  border: none;
-  padding: 10px 15px;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.printer-transaction-wrapper .tabs button {
-  margin-right: 10px;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  background-color: #f1f1f1;
-  cursor: pointer;
-}
-
-.printer-transaction-wrapper .tabs button.active {
-  background-color: #007bff;
-  color: white;
-}
-
-.printer-transaction-wrapper .transaction-list {
-  margin-top: 20px;
-}
-
-.printer-transaction-wrapper .transaction {
-  border: 1px solid #ddd;
-  padding: 10px;
-  margin-bottom: 10px;
-  border-radius: 5px;
-}
-
-.printer-transaction-wrapper .transaction button {
-  margin-top: 10px;
-  padding: 5px 10px;
-  background-color: #28a745;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.printer-transaction-wrapper .transaction-detail {
-  margin-top: 20px;
-  padding: 20px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  background-color: #f9f9f9;
-}
-
-.printer-transaction-wrapper .transaction-detail h3 {
-  margin-bottom: 15px;
-}
-
-.printer-transaction-wrapper .transaction-detail p {
-  font-size: 16px;
-}
-
-.printer-transaction-wrapper .confirmed-icon {
-  color: green;
-  font-weight: bold;
-}
-
-/* Modal */
-
-.printer-transaction-wrapper .modal {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 1000;
-}
-
-.printer-transaction-wrapper .modal-content {
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 8px;
-  width: 400px;
-  position: relative;
-}
-
-.printer-transaction-wrapper .close {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  font-size: 24px;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.printer-transaction-wrapper .modal-content h3 {
-  margin-top: 0;
-}
-
-.printer-transaction-wrapper .modal-content p {
-  margin: 10px 0;
-}
-
-.printer-transaction-wrapper .modal-content button {
-  background-color: #007bff;
-  color: white;
-  padding: 10px 15px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
+};
+
+.hover\:tw-bg-blue-700:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(29 78 216 / var(--tw-bg-opacity, 1));
 }
 
 .hover\:tw-bg-gray-100:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(243 244 246 / var(--tw-bg-opacity, 1));
-}
-
-.hover\:tw-bg-green-600:hover {
-  --tw-bg-opacity: 1;
-  background-color: rgb(22 163 74 / var(--tw-bg-opacity, 1));
-}
-
-.hover\:tw-bg-blue-600:hover {
-  --tw-bg-opacity: 1;
-  background-color: rgb(37 99 235 / var(--tw-bg-opacity, 1));
-}
-
-.hover\:tw-bg-blue-700:hover {
-  --tw-bg-opacity: 1;
-  background-color: rgb(29 78 216 / var(--tw-bg-opacity, 1));
 }
 
 .hover\:tw-text-blue-500:hover {

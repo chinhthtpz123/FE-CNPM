@@ -14,7 +14,7 @@ const PrintManagement = () => {
   const [status, setStatus] = useState("unconfirmed");
   const [timelinePosition, setTimelinePosition] = useState(0);
   const [timestamps, setTimestamps] = useState({});
-  
+
   const documents = [
     { name: "Tài liệu học tập.pdf", size: "2.3 MB", pages: 10 },
     { name: "Tài liệu báo cáo.pdf", size: "3.5 MB", pages: 15 },
@@ -71,19 +71,14 @@ const PrintManagement = () => {
     if (timelinePosition === 1) return "text-green-500"; // Accessed - green
     if (timelinePosition === 2) return "text-purple-500"; // Done - purple
   };
-  const handleConfirm = () => {
-    setProgressState({
-        status: "confirmed",
-        timelinePosition: progressState.timelinePosition + 1,
-    });
-};
+
   return (
     <div>
       <Header />
       <div className="tw-main-content tw-flex tw-justify-center tw-items-start tw-gap-8 tw-px-4 tw-py-6 w-full">
         {/* Column 1: Transaction Info */}
         <div className="tw-w-1/3 tw-p-6 tw-bg-white tw-shadow-xl tw-rounded-lg">
-          {/* Transaction Name */}  
+          {/* Transaction Name */}
           <div className="tw-info-card tw-mb-6">
             <div className="tw-text-center tw-overflow-hidden tw-border tw-border-gray-300 tw-rounded-lg">
               <h3 className="tw-text-sm tw-py-2 tw-bg-blue-200 tw-font-semibold tw-text-blue-600 tw-mb-4 tw-flex tw-items-center tw-justify-center ">
@@ -100,15 +95,18 @@ const PrintManagement = () => {
           <div className="tw-info-card tw-mb-6">
             <div className="tw-text-center tw-overflow-hidden tw-border tw-border-gray-300 tw-rounded-lg">
               <h3 className="tw-text-sm tw-py-2 tw-bg-green-200 tw-font-semibold tw-text-green-600 tw-mb-4 tw-flex tw-items-center tw-justify-center">
-                Khách hàng
+                Nhân viên
                 <FaRegUserCircle className="tw-ml-2 tw-text-lg" />{" "}
                 {/* Icon with margin-right */}
               </h3>
               <p className="tw-text-sm tw-text-gray-700">
-                <span className="tw-font-bold">Tên:</span> Nguyễn Văn A
+                <span className="tw-font-bold">Tên:</span> Chill Guys
               </p>
               <p className="tw-text-sm tw-text-gray-700">
-                <span className="tw-font-bold">Email:</span> user@example.com
+                <span className="tw-font-bold">Mã nhân viên:</span> Chill Guys
+              </p>
+              <p className="tw-text-sm tw-text-gray-700">
+                <span className="tw-font-bold">Email:</span> chillguys@example.com
               </p>
               <p className="tw-text-sm tw-text-gray-700">
                 <span className="tw-font-bold">Số điện thoại:</span> 0901234567
@@ -311,19 +309,7 @@ const PrintManagement = () => {
             </div>
           </div>
 
-          {/* Confirmation Button */}
-          <div className="tw-mt-6 tw-text-center">
-            <button
-              className="tw-bg-blue-600 tw-text-white tw-px-4 tw-py-2 tw-rounded-full"
-              onClick={handleStatusChange}
-            >
-              {status === "unconfirmed"
-                ? "Xác nhận"
-                : status === "confirmed"
-                ? "Hoàn thành"
-                : "Đã hoàn thành"}
-            </button>
-          </div>
+         
         </div>
 
         {/* Column 3: Document Info */}

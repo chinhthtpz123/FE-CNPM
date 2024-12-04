@@ -15,6 +15,7 @@ import ConfirmPrint from "./components/app/ConfirmPrint/ConfirmPrint.jsx";
 import PrinterList from "./components/app/transaction/PrinterList.jsx";
 import PrinterTransaction from "./components/app/transaction/PrinterTransaction.jsx";
 import PrintManagement from "./components/app/PrintManagement/PrintManagement.jsx";
+import PrintManagementCus from "./components/app/PrintManagement/PrintManagement-Cus.jsx";
 const router = createBrowserRouter([
   {
     path: '/',
@@ -64,6 +65,11 @@ const router = createBrowserRouter([
   {
     path: '/management',
     element: <PrintManagement />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: '/managementcus',
+    element: <PrintManagementCus />,
     errorElement: <ErrorPage />,
   }
 ]);
