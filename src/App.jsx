@@ -19,6 +19,7 @@ import PaperShop from "./components/app/BuyPaper/PaperShop.jsx";
 // import PrinterTransaction from "./components/app/transaction/PrinterTransaction.jsx";
 import PrintManagement from "./components/app/PrintManagement/PrintManagement.jsx";
 import PrintManagementCus from "./components/app/PrintManagement/PrintManagement-Cus.jsx";
+import AdminManagement from "./components/app/PrintManagement/AdminManagement.jsx";
 
 const router = createBrowserRouter([
   {
@@ -83,6 +84,11 @@ const router = createBrowserRouter([
   {
     path: '/managementcus',
     element: <PrintManagementCus />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: '/admin/management',
+    element: <AdminManagement />,
     errorElement: <ErrorPage />,
   }
 ]);

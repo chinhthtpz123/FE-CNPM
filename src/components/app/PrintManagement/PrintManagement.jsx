@@ -80,7 +80,7 @@ const PrintManagement = () => {
   return (
     <div>
       <Nav />
-      <div className="tw-main-content tw-flex tw-justify-center tw-items-start tw-gap-8 tw-px-4 tw-py-6 w-full">
+      <div className="tw-main-content tw-mt-20 tw-flex tw-justify-center tw-items-start tw-gap-8 tw-px-4 tw-py-6 w-full">
         {/* Column 1: Transaction Info */}
         <div className="tw-w-1/3 tw-p-6 tw-bg-white tw-shadow-xl tw-rounded-lg">
           {/* Transaction Name */}  

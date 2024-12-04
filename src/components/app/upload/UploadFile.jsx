@@ -56,12 +56,13 @@ const FileUpload = () => {
   };
 
   const uploadFiles = (filesToUpload) => {
-    initTransaction(filesToUpload[0].name,filesToUpload,[]);
+    // initTransaction(filesToUpload[0].name,filesToUpload,[]);
     const newFiles = filesToUpload instanceof Array ? filesToUpload.map((file) => ({
       name: file.name,
       size: file.size,
       uploadedSize: 0,
       isCompleted: false,
+      isNew: true
     })) : [
       {
       name: filesToUpload.name,
@@ -72,7 +73,7 @@ const FileUpload = () => {
     ];
 
 
-    newFiles.forEach((file) => {
+    newFiles.filter((item) => item.isNew).forEach((file) => {
       const interval = setInterval(() => {
         setFiles((prevFiles) =>
           prevFiles.map((f) =>
@@ -85,7 +86,12 @@ const FileUpload = () => {
               : f
           )
         );
-        if (file.uploadedSize >= file.size) clearInterval(interval);
+        
+        console.log(1);
+
+        setTimeout(() => {
+          clearInterval(interval);
+        }, 5000); 
       }, 100);
     });
 
