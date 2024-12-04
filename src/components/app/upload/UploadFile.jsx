@@ -24,7 +24,7 @@ const FileUpload = () => {
 
   useEffect(()=>{
     const fetchDocmuments = async ()=>{
-      const api = "http://localhost:8080/customers/documents";
+      const api = "http://localhost:8080/customers/documents/";
       const res = await axios.get(api,{
         headers: {
           Authorization: `Bearer ${token}`,

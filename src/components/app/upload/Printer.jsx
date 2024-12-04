@@ -2,18 +2,26 @@
 import Header from "../../layout/Nav";
 import Footer from "../../layout/Footer";
 import PrinterImg from '../../../assets/images/logo-new.png';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { token } from "../../../utils";
 import { useTransactionStore } from "../Printsetting/PrintTransactionStore";
 
 
+const printerList = [
+  {id: 1, name: 'dfafkasd', code: 'fa;fdkja', location: 'fjaksdf;a', status: 'online'},
+  {id: 1, name: 'dfafkasd', code: 'fa;fdkja', location: 'fjaksdf;a', status: 'online'},
+  {id: 1, name: 'dfafkasd', code: 'fa;fdkja', location: 'fjaksdf;a', status: 'online'},
+  {id: 1, name: 'dfafkasd', code: 'fa;fdkja', location: 'fjaksdf;a', status: 'online'}
+]
+
 
 const Printer = () => {
   const{newDocuments=[]} = useTransactionStore();
-  console.log(newDocuments);
-  const [printerList,setPrinterList] = useState([]);
+  // console.log(newDocuments);
+  const navigate = useNavigate();
+  // const [printerList,setPrinterList] = useState([]);
   const {setPrinter} = useTransactionStore();
   useEffect(()=>{
     const fetchPrinterList = async ()=>{
@@ -45,10 +53,18 @@ const Printer = () => {
     fetchPrinterList();
   },[]);
 
+  const handleBack = () => {
+    navigate('/upload', {replace: true});
+  }
+
+  const handleOnClick = () => {
+    navigate('/upload/printsetting', {replace:true})
+  }
+
   return (
     <>
     <Header />
-    <div className="tw-relative tw-container tw-mx-auto tw-w-3/5 tw-p-6 tw-min-h-max tw-bg-white tw-rounded-3xl tw-shadow-md tw-mt-8">
+    <div className="tw-relative tw-mt-28 tw-container tw-mx-auto tw-w-3/5 tw-p-6 tw-min-h-max tw-bg-white tw-rounded-3xl tw-shadow-md">
       <div className="tw-flex tw-items-center tw-absolute tw-top-0 tw-left-1/2 tw-transform -tw-translate-x-1/2">
         <img className="tw-w-20" src={PrinterImg} alt="logo"/>
         <p className="tw-text-center tw-text-customBlue tw-text-2xl tw-inline-block ">Choose Printer</p>
@@ -64,8 +80,8 @@ const Printer = () => {
         </label>
       </div>
       
-      <div className="tw-overflow-auto tw-rounded-lg tw-shadow-md tw-border tw-mt-2 tw-bg-scroll tw-h-50">
-        <table className="tw-min-w-full tw-border tw-rounded-lg">
+      <div className="tw-rounded-lg tw-shadow-md tw-mt-2 tw-bg-scroll tw-overflow-y-auto tw-h-52">
+        <table className="tw-min-w-full tw-border-separate tw-border-spacing-0 tw-border tw-rounded-lg tw-overflow-hidden">
           <thead className="tw-bg-gray-100">
             <tr>
               <th className="tw-px-6 tw-py-3 tw-border-b tw-text-left">Tên máy in</th>
@@ -105,9 +121,13 @@ const Printer = () => {
       </div>
 
       <div className="tw-flex tw-space-x-9 tw-items-center tw-justify-center tw-mt-8 ">
-        <button className="tw-border tw-border-gray-100 tw-rounded-md tw-text-customBlue tw-bg-white tw-p-1">Quay lại</button>
-        <button className="tw-border tw-border-gray-100 tw-rounded-md tw-text-customBlue tw-bg-white tw-p-1">
-          <Link to={"/printsetting"}>Xác Nhận</Link>
+        <button 
+          className="tw-border tw-border-gray-100 tw-rounded-md tw-text-customBlue tw-bg-white tw-p-1"
+          onClick={handleBack}>Quay lại</button>
+        <button 
+          className="tw-border tw-border-gray-100 tw-rounded-md tw-text-customBlue tw-bg-white tw-p-1"
+          onClick={handleOnClick}>
+            Xác Nhận
           </button>
       </div>
     </div>

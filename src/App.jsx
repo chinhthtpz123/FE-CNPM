@@ -44,12 +44,12 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
   },
   {
-    path: '/printsetting',
+    path: '/upload/printsetting',
     element: <Printsetting />,
     errorElement: <ErrorPage />,
   },
   {
-    path: '/confirm',
+    path: '/upload/confirm',
     element: <ConfirmPrint />,
     errorElement: <ErrorPage />,
   },

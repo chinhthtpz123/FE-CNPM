@@ -2,7 +2,7 @@
 import  { useState } from 'react';
 import Header from '../../layout/Nav';
 import imageHcmut from '../../../../public/images/HCMUT-BachKhoa-logo.png';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useTransactionStore } from './PrintTransactionStore';
 
 
@@ -12,15 +12,23 @@ import { useTransactionStore } from './PrintTransactionStore';
 const PrintSettings = () => {
   const {newDocuments,updateDocumentSetting} = useTransactionStore();
   const[currentFileIdx, setCurrentFileIdx] = useState(0);
-  console.log(currentFileIdx);
+  const navigate = useNavigate();
+  
   const selectedFile = newDocuments[currentFileIdx].metadata.detail;
- console.log(selectedFile.numOfCopies);
+ 
+  const handleOnClick = () => {
+    navigate('/uploadq/confirm', {replace: true});
+  }
+
+  const handleOnBackPage = () => {
+    navigate('/upload/printer', {replace: true})
+  }
   
   return (
     <>
      <Header />
      <div className="tw-flex tw-ml-[240px] tw-mt-[73px]">
-      <div className="tw-border tw-border-gray-200 tw-h-full tw-shadow-md tw-mt-12 tw-p-4 tw-rounded-lg">
+      <div className="tw-border tw-border-gray-200 tw-h-full tw-shadow-md tw-mt-12 tw-p-4 tw-rounded-lg ">
         <div className="tw-text-2xl tw-font-medium tw-text-customBlue tw-mb-3">Danh sach file</ div>
         {newDocuments && newDocuments.length > 0 && newDocuments.map((item, index) => {
           return (
@@ -28,8 +36,8 @@ const PrintSettings = () => {
               className={currentFileIdx === index ? "tw-flex tw-items-center tw-justify-between tw-min-w-max tw-p-2 tw-space-x-3 tw-bg-blue-50 tw-text-blue-500 tw-rounded-md" :
                 "tw-flex tw-items-center tw-justify-between tw-w-full tw-space-x-3 tw-p-2 tw-text-gray-700"
               }>
-              <p className={currentFileIdx === index ? "tw-block tw-text-lg tw-mb-0 tw-text-blue-500" :
-                "tw-block tw-text-lg tw-mb-0 tw-text-gray-700"
+              <p className={currentFileIdx === index ? "tw-block tw-min-w-16 tw-max-w-32 tw-text-lg tw-mb-0 tw-text-blue-500 tw-text-ellipsis tw-overflow-hidden" :
+                "tw-min-w-16 tw-max-w-32 tw-block tw-text-lg tw-mb-0 tw-text-gray-700 tw-text-ellipsis tw-overflow-hidden"
               }>{item.metadata.name}</p>
               <button className="tw-p-2 tw-border tw-border-gray-200 tw-rounded-md"
                 onClick={() => setCurrentFileIdx(index)}>Chon file </button> 
@@ -180,10 +188,10 @@ const PrintSettings = () => {
 
           {/* Các nút hành động */}
           <div className="buttons">
-            <button>
-              <Link to={'/confirm'}>Xác nhận</Link>
+            <button onClick={handleOnClick}>
+              Xác Nhận 
             </button>
-            <button>Quay lại</button>
+            <button onClick={handleOnBackPage}>Quay lại</button>
           </div>
         </div>
       </div>
