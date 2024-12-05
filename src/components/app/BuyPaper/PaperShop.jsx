@@ -1,19 +1,20 @@
-
-  import React, { useState } from "react";
-  import Nav from '../../layout/Nav';
-  import Footer from '../../layout/Footer';
-  import { FaCartShopping } from "react-icons/fa6";
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import Nav from '../../layout/Nav';
+import Footer from '../../layout/Footer';
+import { FaCartShopping } from "react-icons/fa6";
+  import { useLocation, useNavigate } from "react-router-dom";
+  import axios from 'axios';
 
 const PaperShop = () => {
   const navigate = useNavigate(); 
+  const location = useLocation();
   const paperPrices = {
     A3: 500,
     A4: 400,
     A5: 200,
   };
 
-  const [selectedSize, setSelectedSize] = useState("A4");
+  const [selectedSize, setSelectedSize] = useState(location.state.paperType);
   const [quantity, setQuantity] = useState(1);
   const [cart, setCart] = useState([]);
 
@@ -42,21 +43,26 @@ const PaperShop = () => {
   }
 
   const totalPrice = cart.reduce((sum, item) => sum + item.price, 0);
-
+  const token = localStorage.getItem("accessTokenCustomer");
   const fetchPayments = async ()=>{
     const api_payment = "http://localhost:8080/payment/create";
     const body = {
       amount: totalPrice.toString()
     }
     const res = await axios.post(api_payment,body,{
-      // headers: {
-      //   Authorization: Bearer ${token},
-      // }
+      headers: {
+        Authorization: `Bearer ${token}`,
+      }
     });
     if(res.status == 201  && res.data.success) {
+      console.log("_______________________________________________________________")
       const payUrl = res.data.data?.payUrl;
       const orderId = res.data.data?.orderId;
+      if(orderId){
+        console.log("Order ID:", orderId)
+      }
       if(payUrl){
+        console.log("Redirecting to payment URL:", payUrl)
         window.location.href = payUrl;
       }
       const fetchStatus = async ()=>{
@@ -88,11 +94,11 @@ const PaperShop = () => {
         }
         const res = await axios.post(api_status,body_status,{
           // headers: {
-          //   Authorization: Bearer ${token},
+          //   Authorization: `Bearer ${token}`,
           // }
         });
         if(res.status == 201  && res.data.success) {
-          
+          //
         } else {
           alert(res.data.message);
         }
@@ -172,17 +178,17 @@ const PaperShop = () => {
           {cart.length > 0 ? (
             <table className="cart-content">
               <tr>
-                <td className="b px-2 py-1">Khổ giấy</td>
-                <td className="b px-2 py-1">Số lượng</td>
-                <td className="b px-2 py-1">Giá tiền (VNĐ)</td>
-                <td className="b px-2 py-1">Hành động</td>
+                <td className="px-2 py-1 b">Khổ giấy</td>
+                <td className="px-2 py-1 b">Số lượng</td>
+                <td className="px-2 py-1 b">Giá tiền (VNĐ)</td>
+                <td className="px-2 py-1 b">Hành động</td>
               </tr>
               {cart.map((item, index) => (
                 <tr key={index}>
-                  <td className="ct px-2 py-1 text-center">{item.size}</td>
-                  <td className="ct px-2 py-1 text-center">{item.quantity}</td>
-                  <td className="ct px-2 py-1 text-center">{item.price}</td>
-                  <td className="ct px-2 py-1 text-center">
+                  <td className="px-2 py-1 text-center ct">{item.size}</td>
+                  <td className="px-2 py-1 text-center ct">{item.quantity}</td>
+                  <td className="px-2 py-1 text-center ct">{item.price}</td>
+                  <td className="px-2 py-1 text-center ct">
                     <button
                       onClick={() => removeFromCart(item.size)}
                       className="button-delete"
@@ -206,7 +212,7 @@ const PaperShop = () => {
 
       {/* Nút hành động */}
       <div className="buttons">
-        <button onClick={() => fetchPayments}> Xác nhận </button>
+        <button onClick={() => {fetchPayments()}}> Xác nhận </button>
         <button onClick={handleOnBack}> Hủy bỏ </button>
       </div>
     </div>

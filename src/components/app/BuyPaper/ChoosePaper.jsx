@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import  { useState } from 'react';
 import Nav from '../../layout/Nav';
 import Footer from '../../layout/Footer';
+import { ToastContainer, toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 
 const ChoosePaper = () => {
@@ -13,12 +14,18 @@ const ChoosePaper = () => {
 
     const [activeCard, setActiveCard] = useState(null); // Lưu trữ ID của card được chọn
 
-    const handleCardClick = (index) => {
-      setActiveCard(index); // Cập nhật ID của card được click
+    const handleCardClick = (paper) => {
+      setActiveCard(prev => prev === paper.name ? null : paper.name); // Cập nhật ID của card được click
     };
 
     const handleOnClick = () => {
-      navigate('/paper/shop')
+      if (!activeCard) {
+        toast.error('Please choose a paper', {
+          position: "top-center",
+        });
+        return;
+      }
+      navigate('/paper/shop', { state: {paperType: activeCard}})
     }
     const handleOnBack = () => {
       navigate('/afterlogin')
@@ -33,9 +40,8 @@ const ChoosePaper = () => {
       <div className="choose-paper-content">
         {ChoosePaper.map((paper, index) => (
           <div key={index} 
-          // className="card"
-          className={`card ${activeCard === index ? "active" : ""}`}
-          onClick={() => handleCardClick(index)}
+          className={`card ${activeCard === paper.name ? "active" : ""}`}
+          onClick={() => handleCardClick(paper)}
           >
             <div className="card-body">
               <h3>Giấy {paper.name}</h3>
@@ -47,14 +53,14 @@ const ChoosePaper = () => {
       </div>
       {/* Các nút hành động */}
       <div className="buttons">
-          <button onClick={handleOnClick}>Tiếp tục</button>
+          <button onClick={() => handleOnClick()}>Tiếp tục</button>
           <button onClick={handleOnBack}>Quay lại</button>
         </div>
     </div>
     <Footer />
+    <ToastContainer />
     </>
   );
   };
   
   export default ChoosePaper;
-  
