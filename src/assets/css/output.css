@@ -835,6 +835,10 @@ video {
   height: 1rem;
 }
 
+.tw-h-48 {
+  height: 12rem;
+}
+
 .tw-h-5 {
   height: 1.25rem;
 }
@@ -849,10 +853,6 @@ video {
 
 .tw-h-full {
   height: 100%;
-}
-
-.tw-h-screen {
-  height: 100vh;
 }
 
 .tw-max-h-min {
@@ -929,18 +929,6 @@ video {
   width: 100%;
 }
 
-.tw-w-10\/12 {
-  width: 83.333333%;
-}
-
-.tw-w-3\/4 {
-  width: 75%;
-}
-
-.tw-w-4\/5 {
-  width: 80%;
-}
-
 .tw-min-w-16 {
   min-width: 4rem;
 }
@@ -956,6 +944,10 @@ video {
 .tw-min-w-max {
   min-width: -moz-max-content;
   min-width: max-content;
+}
+
+.tw-max-w-2xl {
+  max-width: 42rem;
 }
 
 .tw-max-w-32 {
@@ -2149,7 +2141,6 @@ video {
 
 .card.active {
   background-image: url(/src/assets/images/service-bg.jpg);
-  pointer-events: none;
   color: #ffffff;
   background-size: cover;
   background-repeat: no-repeat;
@@ -2535,6 +2526,10 @@ video {
 }
 
 @media (min-width: 640px) {
+  .sm\:tw-w-1\/2 {
+    width: 50%;
+  }
+
   .sm\:tw-translate-x-0 {
     --tw-translate-x: 0px;
     transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));

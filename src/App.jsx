@@ -23,6 +23,7 @@ import AdminManagementDetail from "./components/app/DetailTransaction/AdminManag
 import UserManagement from "./components/app/UserManagement/UserManagement.jsx";
 import AdminManagement from "./components/app/Transaction/AdminMangement.jsx"
 import PrinterManagement from "./components/app/Transaction/PrinterManagement.jsx";
+import InforAccount from "./components/app/InforAccount.jsx";
 
 const router = createBrowserRouter([
   {
@@ -112,6 +113,11 @@ const router = createBrowserRouter([
   {
     path: '/admin/management/printer',
     element: <PrinterManagement />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: '/account/infor',
+    element: <InforAccount />,
     errorElement: <ErrorPage />,
   }
 ]);

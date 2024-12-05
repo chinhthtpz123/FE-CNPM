@@ -1,19 +1,20 @@
 
-  import React, { useState } from "react";
-  import Nav from '../../layout/Nav';
-  import Footer from '../../layout/Footer';
-  import { FaCartShopping } from "react-icons/fa6";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import Nav from '../../layout/Nav';
+import Footer from '../../layout/Footer';
+import { FaCartShopping } from "react-icons/fa6";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const PaperShop = () => {
   const navigate = useNavigate(); 
+  const location = useLocation();
   const paperPrices = {
     A3: 500,
     A4: 400,
     A5: 200,
   };
 
-  const [selectedSize, setSelectedSize] = useState("A4");
+  const [selectedSize, setSelectedSize] = useState(location.state.paperType);
   const [quantity, setQuantity] = useState(1);
   const [cart, setCart] = useState([]);
 
