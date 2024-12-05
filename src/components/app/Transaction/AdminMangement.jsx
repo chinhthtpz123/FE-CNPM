@@ -45,7 +45,7 @@ const TransactionManagement = () => {
             createdAt: transaction.createdAt,
       }))];
     });
-  }, []);
+  }, [status]);
 
   useEffect(() => {
     const fetchAdminTransactions = async (status)=>{
@@ -62,7 +62,6 @@ const TransactionManagement = () => {
       if(res.status == 200) {
         transactionsList = res.data.data.data;
         // renderTable(transactions);
-        loadMoreData();
       } else {
         console.error("Failed to fetch transactions:", res.data.message);
       }
@@ -70,7 +69,10 @@ const TransactionManagement = () => {
     }
     fetchAdminTransactions(status.toUpperCase());
   },[]);
-  
+
+  useEffect(()=>{
+    loadMoreData();
+  },[])
   const hoverButton = (() => "tw-text-gray-500 tw-bg-white tw-transition-all hover:tw-translate-y-[-4px]")();
 
   const handleScroll = (e) => {
