@@ -1,27 +1,51 @@
-import React, { useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+
+import { useEffect, useRef, useState } from 'react';
+import {  useNavigate } from 'react-router-dom';
 import { FaRegTrashCan } from "react-icons/fa6";
 import { IoCloudUploadOutline } from "react-icons/io5";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { AiOutlineClose, AiOutlineCheckCircle, AiOutlineHistory } from 'react-icons/ai';
-import Footer from '../../layout/Footer';
-import Header from '../../layout/Header';
+import Nav from '../../layout/Nav';
+import axios from 'axios';
+import { token } from '../../../utils';
+import { useTransactionStore } from '../Printsetting/PrintTransactionStore';
 
-const apiUploadedFile = [
-  { id: 1, name: 'file1.txt', size: 10, },
-  { id: 2, name: 'file2.txt', size: 20, },
-  { id: 3, name: 'file3.txt', size: 30, },
-]
+
 
 const FileUpload = () => {
   const [files, setFiles] = useState([]);
-  const [uploadedFile, setUploadedFile] = useState(apiUploadedFile);
+
+  const [uploadedFile, setUploadedFile] = useState();
+
+  const navigate = useNavigate();
   const fileInputRef = useRef(null);
+  const {initTransaction} = useTransactionStore();
+
+  useEffect(()=>{
+    const fetchDocmuments = async ()=>{
+      const api = "http://localhost:8080/customers/documents";
+      const res = await axios.get(api,{
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      });
+      if(res.status ==200) {
+        setUploadedFile(res.data.data.map((document)=>({
+          id: document.id.value,
+          name: document.name,
+        })));
+      } else {
+        alert(res.data.message);
+      }
+    }
+    fetchDocmuments();
+  },[]);
 
   const handleFiles = (event) => {
     const selectedFiles = Array.from(event.target.files);
     uploadFiles(selectedFiles);
     event.target.value = null;
-    
   };
 
   const handleDrop = (event) => {
@@ -32,12 +56,21 @@ const FileUpload = () => {
   };
 
   const uploadFiles = (filesToUpload) => {
-    const newFiles = filesToUpload.map((file) => ({
+    initTransaction(filesToUpload[0].name,filesToUpload,[]);
+    const newFiles = filesToUpload instanceof Array ? filesToUpload.map((file) => ({
       name: file.name,
       size: file.size,
       uploadedSize: 0,
       isCompleted: false,
-    }));
+    })) : [
+      {
+      name: filesToUpload.name,
+      size: filesToUpload.size,
+      uploadedSize: 0,
+      isCompleted: false,
+      }
+    ];
+
 
     newFiles.forEach((file) => {
       const interval = setInterval(() => {
@@ -68,21 +101,47 @@ const FileUpload = () => {
     setFiles(prev => prev.filter((f) => f.name !== file.name));
   }
 
+  const handleCheckBox = (e,item) => {
+   if(!e.target.checked){
+    setFiles(prev => prev.filter((f) => f.name !== item.name));
+   }
+   else {
+    uploadFiles(item);
+   }
+  }
+
+  const handleOnClick = () => {
+    if(!files || files.length <= 0) {
+      toast.warn('No files to upload', {
+        position: "top-center"
+      });
+      return;
+    } 
+    
+    navigate('/upload/printer' , {replace: true})
+  }
+
   return (
     <>
-    <Header />
-    <div className='tw-grid tw-grid-cols-4'>
+    <Nav />
+    <div className='tw-ml-[240px] tw-mt-[73px] tw-grid tw-grid-cols-4'>
       <div className='tw-max-h-min tw-mx-auto tw-rounded-2xl tw-shadow-md tw-bg-white tw-p-6 tw-mt-8'>
         <div className='tw-relative tw-line-after tw-flex'>
           <AiOutlineHistory className='tw-inline-block tw-text-2xl tw-text-customBlue tw-mr-2 tw-border-solid tw-border-2 tw-rounded-full tw-p-0.5'/>
-          <h2 className=' tw-text-lg tw-inline-block tw-text-customBlue'>Uploaded files</h2>
+          <h2 className='tw-z-0 tw-text-lg tw-inline-block tw-text-customBlue'>Uploaded files</h2>
         </div>
         
-        <div className=''>
+        <div>
           {uploadedFile && uploadedFile.length > 0 && uploadedFile.map((file) => {
             return (
-              <div key={file.id}>
-                <p>{file.name}</p>
+              <div key={file.id} className='tw-flex tw-space-x-3'>
+                <input 
+                  type="checkbox"
+                  value={file.name}
+                  onChange={(e) => handleCheckBox(e,file)} 
+                  checked={files.some((o) => o.name === file.name)} 
+                />
+                <p className='tw-mb-0'>{file.name}</p>
               </div>
             )
           })}
@@ -92,7 +151,7 @@ const FileUpload = () => {
       {/* content */}
       <div className="tw-col-start-2 tw-col-end-5 tw-p-6 tw-min-w-[70%] tw-min-h-max tw-ml-2 tw-mr-[40%] tw-bg-white tw-rounded-3xl tw-shadow-md tw-mt-8 ">
         <div className='tw-flex'>
-          <IoCloudUploadOutline className="tw-text-customBlue tw-text-5xl tw-border-solid tw-border-2 tw-rounded-full tw-p-2 tw-mr-3 tw-flex-none "/>
+          <IoCloudUploadOutline className="tw-text-customBlue tw-text-5xl tw-z-0 tw-border-solid tw-border-2 tw-rounded-full tw-p-2 tw-mr-3 tw-flex-none "/>
           <div className='tw-flex-1 tw-w-auto'>
             <h2 className="tw-text-lg tw-text-customBlue">Upload files</h2>
             <p className="tw-text-sm tw-text-customPurple">Select and upload the files of your choice</p>
@@ -102,7 +161,7 @@ const FileUpload = () => {
 
         <div className="tw-w-full tw-h-0.5 tw-bg-gray-300 tw-my-4"></div>
 
-        <div
+        <div id='fileUploadContainer'
           className="tw-border-dashed tw-border-2 tw-border-gray-300 tw-mt-12 tw-p-6 tw-text-center tw-cursor-pointer tw-rounded-lg "
           onDrop={handleDrop}
           onDragOver={(e) => e.preventDefault()}
@@ -126,15 +185,15 @@ const FileUpload = () => {
           {files.map((file, index) => (
             <div
               key={index}
-              className="tw-flex tw-items-center tw-justify-between tw-bg-[#f1f2f3] tw-p-2 tw-rounded-lg tw-shadow tw-my-2"
+              className="tw-flex tw-items-center tw-justify-between tw-bg-[#f1f2f3] tw-p-2 tw-rounded-2xl tw-shadow tw-my-2"
             >
               <div className="tw-flex tw-items-center">
                 <span className="tw-mr-2 tw-text-red-600">PDF</span>
                 <div>
-                  <p className="tw-font-medium tw-text-gray-700">{file.name}</p>
-                  <p className="tw-text-xs tw-text-opacity-10 tw-text-gray-200">
+                  <div className="tw-font-medium tw-text-gray-700">{file.name}</div>
+                  <div className="tw-text-xs tw-text-opacity-10 tw-text-black">
                     {Math.round(file.uploadedSize / 1024)} KB of {Math.round(file.size / 1024)} KB
-                  </p>
+                  </div>
                 </div>
               </div>
               <div className="tw-flex tw-items-center">
@@ -167,14 +226,15 @@ const FileUpload = () => {
             </div>
           ))}
           <div className='tw-flex tw-items-center tw-justify-center'>
-            <button className='tw-flex tw-mx-auto tw-text-customBlue tw-bg-white tw-border tw-rounded-md tw-border-solid tw-p-1'>
-              <Link to='/upload/printer'>Confirm</Link>
+            <button className='tw-flex tw-mx-auto tw-font-semibold tw-text-base tw-text-white tw-bg-blue-500 tw-px-[30px] tw-py-[14px] tw-rounded-[30px] tw-transition hover:tw-translate-y-1'
+             onClick={() => handleOnClick()}>
+              Confirm
             </button>
           </div>
         </div>
       </div>
     </div>
-    <Footer />
+    <ToastContainer />
     </>
   );
 };

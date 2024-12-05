@@ -1,8 +1,7 @@
 
-import * as ReactDOM from "react-dom/client";
 import {
   // BrowserRouter, Routes, Route
-  createBrowserRouter, Outlet, RouterProvider,
+  createBrowserRouter, RouterProvider,
 } from "react-router-dom";
 import HomePage from './components/HomePage';
 import ErrorPage from "./components/errors/ErrorPage";
@@ -12,10 +11,16 @@ import UploadFile from "./components/app/upload/UploadFile";
 import Printer from "./components/app/upload/Printer";
 import Printsetting from "./components/app/Printsetting/PrintSettings";
 import ConfirmPrint from "./components/app/ConfirmPrint/ConfirmPrint.jsx";
-import PrinterList from "./components/app/transaction/PrinterList.jsx";
-import PrinterTransaction from "./components/app/transaction/PrinterTransaction.jsx";
+// import PrinterList from "./components/app/transaction/PrinterList.jsx";
+// import PrinterTransaction from "./components/app/transaction/PrinterTransaction.jsx";
 import PrintManagement from "./components/app/PrintManagement/PrintManagement.jsx";
 import PrintManagementCus from "./components/app/PrintManagement/PrintManagement-Cus.jsx";
+import TransactionManagement from "./components/app/Employee/TransactionManagement.jsx";
+import AfterLogin from "./components/app/AfterLogin/AfterLogin.jsx";
+import ChoosePaper from "./components/app/BuyPaper/ChoosePaper.jsx";
+import PaperShop from "./components/app/BuyPaper/PaperShop.jsx";
+
+
 const router = createBrowserRouter([
   {
     path: '/',
@@ -52,16 +57,11 @@ const router = createBrowserRouter([
     element: <ConfirmPrint />,
     errorElement: <ErrorPage />,
   },
-  {
-    path: '/printerlist',
-    element: <PrinterList />,
-    errorElement: <ErrorPage />,
-  },
-  {
-    path: '/printertransaction',
-    element: <PrinterTransaction />,
-    errorElement: <ErrorPage />,
-  },
+  // {
+  //   path: '/printertransaction',
+  //   element: <PrinterTransaction />,
+  //   errorElement: <ErrorPage />,
+  // },
   {
     path: '/management',
     element: <PrintManagement />,
@@ -70,6 +70,23 @@ const router = createBrowserRouter([
   {
     path: '/managementcus',
     element: <PrintManagementCus />,
+    // path: '/employee/management/transaction',
+    // element: <TransactionManagement />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: '/afterlogin',
+    element: <AfterLogin />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: '/choosepaper',
+    element: <ChoosePaper />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: '/papershop',
+    element: <PaperShop />,
     errorElement: <ErrorPage />,
   }
 ]);

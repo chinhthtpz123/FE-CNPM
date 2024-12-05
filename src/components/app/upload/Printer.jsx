@@ -1,31 +1,50 @@
 
-import React from "react";
-import Header from "../../layout/Header";
+import Header from "../../layout/Nav";
 import Footer from "../../layout/Footer";
 import PrinterImg from '../../../assets/images/logo-new.png';
+import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { token } from "../../../utils";
+import { useTransactionStore } from "../Printsetting/PrintTransactionStore";
 
-const printers = [
-  {
-    name: "Laser Brother HL-L2321D",
-    code: "BK-LTK-001",
-    location: "B1-110",
-    status: "Available",
-  },
-  {
-    name: "Samsung SL-M2070FW",
-    code: "BK-LTK-011",
-    location: "C5-304",
-    status: "Not available",
-  },
-  {
-    name: "Sony UP-X898MD A6",
-    code: "BK-LTK-007",
-    location: "A3",
-    status: "Not available",
-  },
-];
+
 
 const Printer = () => {
+  const{newDocuments=[]} = useTransactionStore();
+  console.log(newDocuments);
+  const [printerList,setPrinterList] = useState([]);
+  const {setPrinter} = useTransactionStore();
+  useEffect(()=>{
+    const fetchPrinterList = async ()=>{
+      const api = "http://localhost:8080/printers";
+      const page = 1;
+      const size = 10;
+      const res = await axios.get(api, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        params: {
+          status: "ONLINE",
+          page,
+          size,
+        }
+      });
+      if(res.status === 200) {
+        setPrinterList(res.data.data.data.map((printer)=>({
+          id: printer.id.value,
+          name: printer.name,
+          code: printer.code,
+          location: printer.location,
+          status: printer.status,
+        })))
+      } else{
+        alert(res.data.message);
+      }
+    }
+    fetchPrinterList();
+  },[]);
+
   return (
     <>
     <Header />
@@ -45,7 +64,7 @@ const Printer = () => {
         </label>
       </div>
       
-      <div className="tw-overflow-auto tw-rounded-lg tw-shadow-md tw-border tw-mt-2 tw-bg-scroll tw-h-60">
+      <div className="tw-overflow-auto tw-rounded-lg tw-shadow-md tw-border tw-mt-2 tw-bg-scroll tw-h-50">
         <table className="tw-min-w-full tw-border tw-rounded-lg">
           <thead className="tw-bg-gray-100">
             <tr>
@@ -57,15 +76,15 @@ const Printer = () => {
             </tr>
           </thead>
           <tbody>
-            {printers.map((printer, index) => (
-              <tr key={index} className="tw-border-b">
+            {printerList.map((printer) => (
+              <tr key={printer.id} className="tw-border-b">
                 <td className="tw-px-6 tw-py-3">{printer.name}</td>
                 <td className="tw-px-6 tw-py-3">{printer.code}</td>
                 <td className="tw-px-6 tw-py-3 tw-font-bold">{printer.location}</td>
                 <td className="tw-px-6 tw-py-3">
                   <span
                     className={`tw-inline-block tw-px-3 tw-py-1 tw-border tw-text-sm tw-font-semibold tw-rounded-lg ${
-                      printer.status === "Available"
+                      printer.status === "ONLINE"
                         ? "tw-bg-green-100 tw-text-green-600"
                         : "tw-bg-red-100 tw-text-red-600"
                     }`}
@@ -74,7 +93,7 @@ const Printer = () => {
                   </span>
                 </td>
                 <td className="tw-px-6 tw-py-3">
-                  <label className="tw-flex tw-items-center">
+                  <label className="tw-flex tw-items-center" onClick={()=>{setPrinter(printer.id)}}>
                     <input type="radio" name="printer" className="tw-mr-2" />
                     Xác nhận
                   </label>
@@ -87,7 +106,9 @@ const Printer = () => {
 
       <div className="tw-flex tw-space-x-9 tw-items-center tw-justify-center tw-mt-8 ">
         <button className="tw-border tw-border-gray-100 tw-rounded-md tw-text-customBlue tw-bg-white tw-p-1">Quay lại</button>
-        <button className="tw-border tw-border-gray-100 tw-rounded-md tw-text-customBlue tw-bg-white tw-p-1">Xác Nhận</button>
+        <button className="tw-border tw-border-gray-100 tw-rounded-md tw-text-customBlue tw-bg-white tw-p-1">
+          <Link to={"/printsetting"}>Xác Nhận</Link>
+          </button>
       </div>
     </div>
     

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Header from "../../layout/Header";
-import PrintSettings from "../Printsetting/PrintSettings";
+import Nav from '../../layout/Nav';
 import Footer from "../../layout/Footer";
 import { FaRegUserCircle } from "react-icons/fa";
 import { HiPrinter } from "react-icons/hi2";
@@ -20,7 +19,12 @@ const PrintManagement = () => {
     { name: "Tài liệu báo cáo.pdf", size: "3.5 MB", pages: 15 },
     { name: "Tài liệu nghiên cứu.pdf", size: "1.8 MB", pages: 8 },
   ];
-
+  const printerInfo = {
+    name: "Máy in Canon 123",
+    status: "ONLINE",
+    location: "Hồ Chí Minh",
+    code: "IN12345",
+  };
   useEffect(() => {
     const currentTime = new Date().toLocaleString();
     setTimestamps((prevTimestamps) => ({
@@ -79,8 +83,8 @@ const PrintManagement = () => {
 };
   return (
     <div>
-      <Header />
-      <div className="tw-main-content tw-flex tw-justify-center tw-items-start tw-gap-8 tw-px-4 tw-py-6 w-full">
+      <Nav />
+      <div className="tw-mt-20 tw-main-content tw-flex tw-justify-center tw-items-start tw-gap-8 tw-px-4 tw-py-6 w-full">
         {/* Column 1: Transaction Info */}
         <div className="tw-w-1/3 tw-p-6 tw-bg-white tw-shadow-xl tw-rounded-lg">
           {/* Transaction Name */}  
@@ -125,16 +129,25 @@ const PrintManagement = () => {
                 {/* Icon on the right */}
               </h3>
               <p className="tw-text-sm tw-text-gray-700">
-                <span className="tw-font-bold">Tên máy:</span> Máy in Canon 123
+                <span className="tw-font-bold">Tên máy:</span> {printerInfo.name}
               </p>
               <p className="tw-text-sm tw-text-gray-700">
-                <span className="tw-font-bold">Trạng thái:</span> Hoạt động
+                <span className="tw-font-bold">Trạng thái:<span
+                        className={`tw-inline-block tw-px-3 tw-py-1 tw-border tw-text-sm tw-font-semibold tw-rounded-full ${
+                          printerInfo.status === "ONLINE"
+                            ? "tw-bg-green-100 tw-text-green-600"
+                            : "tw-bg-red-100 tw-text-red-600"
+                        }`}
+                      >
+                        {printerInfo.status}
+                      </span>
+                      </span>
+                      </p>
+              <p className="tw-text-sm tw-text-gray-700">
+                <span className="tw-font-bold">Location:</span> {printerInfo.location}
               </p>
               <p className="tw-text-sm tw-text-gray-700">
-                <span className="tw-font-bold">Location:</span> Hồ Chí Minh
-              </p>
-              <p className="tw-text-sm tw-text-gray-700">
-                <span className="tw-font-bold">Mã máy in:</span> IN12345
+                <span className="tw-font-bold">Mã máy in:</span> {printerInfo.code}
               </p>
             </div>
           </div>
@@ -144,14 +157,30 @@ const PrintManagement = () => {
         <div className="tw-w-1/3 tw-p-6 tw-bg-white tw-shadow-xl tw-rounded-lg tw-text-center">
           <div className="tw-info-card tw-mb-6 tw-overflow-hidden tw-border tw-border-gray-300 tw-rounded-lg">
             <h3 className="tw-text-sm tw-font-semibold tw-py-2 tw-bg-blue-200 tw-text-blue-600 tw-text-center tw-mb-4 tw-flex tw-items-center tw-justify-center">
-              Thông tin Giao dịch
-              <HiOutlineInformationCircle className="tw-ml-2 tw-text-lg" />
-            </h3>
-            <p className="tw-text-sm tw-text-gray-700">
-              <span className="tw-font-bold">Số lượng:</span> 50 bản
-            </p>
-            <p className="tw-text-sm tw-text-gray-700">
-              <span className="tw-font-bold">Loại giấy:</span> A4
+            Thông tin Giao dịch
+      <HiOutlineInformationCircle className="tw-ml-2 tw-text-lg" />
+    </h3>
+    
+    {/* Số lượng giấy sử dụng */}
+    <p className="tw-text-sm tw-text-gray-700">
+      <span className="tw-font-bold">Số lượng giấy sử dụng:</span>
+    </p>
+    
+    {/* Danh sách loại giấy đã sử dụng */}
+    <ul className="tw-text-sm tw-text-gray-700 tw-mb-4">
+      <li>
+        <span className="tw-font-bold">A3:</span> 10 tờ
+      </li>
+      <li>
+        <span className="tw-font-bold">A4:</span> 50 tờ
+      </li>
+      <li>
+        <span className="tw-font-bold">A5:</span> 20 tờ
+      </li>
+    </ul>
+    <p className="tw-text-sm tw-text-gray-700">
+              <span className="tw-font-bold"> Trạng thái: </span> 
+              <span className="tw-inline-block tw-px-3 tw-py-1 tw-border tw-text-sm tw-font-semibold tw-rounded-full tw-bg-green-400"> ...</span>
             </p>
             {/* Timeline Container */}
             <div
@@ -470,7 +499,7 @@ const PrintManagement = () => {
                 <div className="tw-mt-6 tw-flex tw-justify-center">
                   <button
                     className="tw-bg-blue-500 tw-text-white tw-px-6 tw-py-2 tw-rounded-full hover:tw-bg-blue-700 tw-z-10"
-                    onClick={() => alert("Tải tài liệu...")}
+                    onClick={() => handleDownload(doc)}
                   >
                     Tải tài liệu
                   </button>
