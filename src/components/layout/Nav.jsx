@@ -51,28 +51,25 @@ const Nav = () => {
               <div className="tw-absolute tw-right-0 tw-mt-2 tw-w-48 tw-bg-white tw-rounded-lg tw-shadow-lg tw-border tw-border-gray-200">
                 <ul className="tw-py-2">
                   <li>
-                    <a
-                      href="/profile"
-                      className="tw-block tw-px-4 tw-py-2 tw-text-gray-700 hover:tw-bg-gray-100"
-                    >
-                      Profile
-                    </a>
+                    <Link 
+                      to="/account/infor"
+                      className="tw-block tw-px-4 tw-py-2 tw-text-gray-700 hover:tw-bg-gray-100">
+                        Profile
+                    </Link>
                   </li>
                   <li>
-                    <a
-                      href="/settings"
-                      className="tw-block tw-px-4 tw-py-2 tw-text-gray-700 hover:tw-bg-gray-100"
-                    >
-                      Settings
-                    </a>
+                    <Link 
+                      to=""
+                      className="tw-block tw-px-4 tw-py-2 tw-text-gray-700 hover:tw-bg-gray-100">
+                        Setting
+                    </Link>
                   </li>
                   <li>
-                    <button
-                      onClick={() => console.log("Logout")}
-                      className="tw-block tw-w-full tw-text-left tw-px-4 tw-py-2 tw-text-gray-700 hover:tw-bg-gray-100"
-                    >
-                      Logout
-                    </button>
+                    <Link 
+                      to="/"
+                      className="tw-block tw-px-4 tw-py-2 tw-text-gray-700 hover:tw-bg-gray-100">
+                      Log out
+                    </Link>
                   </li>
                 </ul>
               </div>
