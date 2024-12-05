@@ -1,13 +1,14 @@
 import axios from 'axios';
 import '../../../input.css';
 import { useTransactionStore } from '../Printsetting/PrintTransactionStore';
-import { token } from '../../../utils';
 import { useNavigate } from 'react-router-dom';
+import { apiBaseUrl } from '../../../config';
 
 const TransactionConfirmation = () => {
   const {newDocuments, name, printerId,oldDocuments} = useTransactionStore();
+  console.log(newDocuments);
   const navigate = useNavigate();
-  const files = newDocuments.map((document)=>({
+  const files = [...newDocuments,...oldDocuments].map((document)=>({
     name: document.metadata.name,
     paperType: document.metadata.detail.paperType,
     numOfCopies: document.metadata.detail.numOfCopies,
@@ -15,13 +16,16 @@ const TransactionConfirmation = () => {
   }));
   const handleCreateTransaction = async ()=>{
     const createTransaction = async() =>{
-      const api = "http://localhost:8080/transactions/create";
+      const api = `${apiBaseUrl}/transactions/create`;
+      const token = localStorage.getItem("accessTokenCustomer");
+      console.log(token);
       const body= {
         printerId,
         name,
         newDocuments: newDocuments.map((document)=>document.metadata),
         oldDocuments:oldDocuments.map((document)=>document.metadata),
       }
+      console.log(body.oldDocuments);
       const res = await axios.post(api,body,{
         headers:{
           Authorization: `Bearer ${token}`

@@ -40,7 +40,8 @@ const manageUser = (roleAcc) => {
 )}
 
 const Sidebar = () => {
-  const roleAcc = 'customer';
+  const roleAcc = localStorage.getItem("role");
+  
 
   return (
     <aside className="tw-fixed tw-rounded-md tw-top-[73px] tw-left-0 tw-z-40 tw-h-screen tw-w-60 tw-transition-transform sm:tw-translate-x-0  tw-bg-white tw-border-r tw-border-gray-200">

@@ -8,8 +8,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import { AiOutlineClose, AiOutlineCheckCircle, AiOutlineHistory } from 'react-icons/ai';
 import Nav from '../../layout/Nav';
 import axios from 'axios';
-import { token } from '../../../utils';
 import { useTransactionStore } from '../Printsetting/PrintTransactionStore';
+import { apiBaseUrl } from '../../../config';
 
 
 
@@ -24,7 +24,8 @@ const FileUpload = () => {
 
   useEffect(()=>{
     const fetchDocmuments = async ()=>{
-      const api = "http://localhost:8080/customers/documents/";
+      const api = `${apiBaseUrl}/customers/documents`;
+      const token = localStorage.getItem("accessTokenCustomer");
       const res = await axios.get(api,{
         headers: {
           Authorization: `Bearer ${token}`,
@@ -65,10 +66,9 @@ const FileUpload = () => {
       isNew: true
     })) : [
       {
+      id: filesToUpload.id,
       name: filesToUpload.name,
-      size: filesToUpload.size,
-      uploadedSize: 0,
-      isCompleted: false,
+      isNew:false,
       }
     ];
 
@@ -87,7 +87,6 @@ const FileUpload = () => {
           )
         );
         
-        console.log(1);
 
         setTimeout(() => {
           clearInterval(interval);
@@ -122,8 +121,12 @@ const FileUpload = () => {
         position: "top-center"
       });
       return;
-    } 
+    }
+    const fileTransaction = [...files];
+    const newFile = fileTransaction.filter((fileResult)=>fileResult.isNew);
+    const oldFile = fileTransaction.filter((fileResult)=>!fileResult.isNew);
     
+    initTransaction(fileTransaction[0],newFile,oldFile);
     navigate('/upload/printer' , {replace: true})
   }
 
@@ -203,21 +206,24 @@ const FileUpload = () => {
                 </div>
               </div>
               <div className="tw-flex tw-items-center">
-                {!file.isCompleted ? (
+                {!file.isCompleted ? file.isNew ? (
                   <progress
                     className="tw-w-24 tw-h-2 tw-mr-2 tw-rounded"
                     value={file.uploadedSize}
                     max={file.size}
                   ></progress>
-                ) : (
+                ):<AiOutlineCheckCircle className="tw-text-green-500 tw-mr-2" /> : (
                   <AiOutlineCheckCircle className="tw-text-green-500 tw-mr-2" />
                 )}
                 <span className="tw-text-xs">
                   {file.isCompleted ? (
                     <span className="tw-text-green-600 tw-block">Completed</span>
-                  ) : (
+                  ) : file.isNew?(
                     <span className="tw-text-blue-600">Uploading...</span>
-                  )}
+                  ):
+                  <span className="tw-text-green-600 tw-block">Completed</span>
+
+                  }
                 </span>
                 {file.isCompleted ? (
                   <FaRegTrashCan 

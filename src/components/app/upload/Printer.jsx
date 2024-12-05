@@ -2,30 +2,23 @@
 import Header from "../../layout/Nav";
 import Footer from "../../layout/Footer";
 import PrinterImg from '../../../assets/images/logo-new.png';
-import { Link, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import {  useNavigate } from "react-router-dom";
+import { useEffect, useState} from "react";
 import axios from "axios";
-import { token } from "../../../utils";
 import { useTransactionStore } from "../Printsetting/PrintTransactionStore";
 
 
-const printerList = [
-  {id: 1, name: 'dfafkasd', code: 'fa;fdkja', location: 'fjaksdf;a', status: 'online'},
-  {id: 1, name: 'dfafkasd', code: 'fa;fdkja', location: 'fjaksdf;a', status: 'online'},
-  {id: 1, name: 'dfafkasd', code: 'fa;fdkja', location: 'fjaksdf;a', status: 'online'},
-  {id: 1, name: 'dfafkasd', code: 'fa;fdkja', location: 'fjaksdf;a', status: 'online'}
-]
+
 
 
 const Printer = () => {
-  const{newDocuments=[]} = useTransactionStore();
-  // console.log(newDocuments);
   const navigate = useNavigate();
-  // const [printerList,setPrinterList] = useState([]);
+  const [printerList,setPrinterList] = useState([]);
   const {setPrinter} = useTransactionStore();
   useEffect(()=>{
     const fetchPrinterList = async ()=>{
       const api = "http://localhost:8080/printers";
+      const token = localStorage.getItem("accessTokenCustomer");
       const page = 1;
       const size = 10;
       const res = await axios.get(api, {

@@ -34,6 +34,7 @@ export const useTransactionStore = create(set=>({
         oldDocuments: oldFiles.map((oldFile)=>({
             metadata:{
                 id: oldFile.id,
+                name: oldFile.name,
                 detail: {
                     ...defaultFileConfig,
                 }
