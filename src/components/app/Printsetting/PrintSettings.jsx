@@ -2,7 +2,7 @@
 import  { useState } from 'react';
 import Nav from '../../layout/Nav';
 import imageHcmut from '../../../../public/images/HCMUT-BachKhoa-logo.png';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useTransactionStore } from './PrintTransactionStore';
 
 
@@ -10,12 +10,17 @@ import { useTransactionStore } from './PrintTransactionStore';
 
 
 const PrintSettings = () => {
-  const {newDocuments,updateDocumentSetting} = useTransactionStore();
+  const {newDocuments,oldDocuments,updateDocumentSetting} = useTransactionStore();
+  console.log(newDocuments);
   const[currentFileIdx, setCurrentFileIdx] = useState(0);
+  const [currentFileStore,setCurrentFileStore] = useState({
+    isNew: newDocuments.length > 0,
+    idx: 0,
+  })
   const navigate = useNavigate();
   
-  const selectedFile = newDocuments[currentFileIdx].metadata.detail;
- 
+  const selectedFile = currentFileStore.isNew ? newDocuments[currentFileStore.idx].metadata.detail: oldDocuments[currentFileStore.idx].metadata.detail;
+  console.log(selectedFile.numOfCopies);
   const handleOnClick = () => {
     navigate('/upload/confirm', {replace: true});
   }
@@ -30,7 +35,7 @@ const PrintSettings = () => {
      <div className="tw-flex tw-ml-[240px] tw-mt-[73px]">
       <div className="tw-border tw-border-gray-200 tw-h-full tw-shadow-md tw-mt-12 tw-p-4 tw-rounded-lg ">
         <div className="tw-text-2xl tw-font-medium tw-text-customBlue tw-mb-3">Danh sach file</ div>
-        {newDocuments && newDocuments.length > 0 && newDocuments.map((item, index) => {
+        {[...newDocuments.map((file,idx)=>({...file,idx,isNew:true})),...oldDocuments.map((file,idx)=>({...file,idx,isNew:false}))].map((item, index) => {
           return (
             <div key={index} 
               className={currentFileIdx === index ? "tw-flex tw-items-center tw-justify-between tw-min-w-max tw-p-2 tw-space-x-3 tw-bg-blue-50 tw-text-blue-500 tw-rounded-md" :
@@ -40,7 +45,13 @@ const PrintSettings = () => {
                 "tw-min-w-16 tw-max-w-32 tw-block tw-text-lg tw-mb-0 tw-text-gray-700 tw-text-ellipsis tw-overflow-hidden"
               }>{item.metadata.name}</p>
               <button className="tw-p-2 tw-border tw-border-gray-200 tw-rounded-md"
-                onClick={() => setCurrentFileIdx(index)}>Chon file </button> 
+                onClick={() => {
+                  setCurrentFileIdx(index),
+                  setCurrentFileStore({
+                    idx:item.idx,
+                    isNew: item.isNew,
+                  })
+                }}>Chon file </button> 
             </div>
           )
         })}
@@ -65,14 +76,14 @@ const PrintSettings = () => {
                   type="number"
                   value={selectedFile.numOfCopies}
                   onChange={(e) =>
-                    updateDocumentSetting(currentFileIdx,"numOfCopies",Math.max(1, e.target.value),true)
+                    updateDocumentSetting(currentFileStore.idx,"numOfCopies",Math.max(1, e.target.value),currentFileStore.isNew)
                   }
                 />
               </label>
               <label className="label">
                 <span className="label-title">Loại giấy:</span>
                 <select value={selectedFile.paperType} onChange={(e) =>
-                    updateDocumentSetting(currentFileIdx,"paperType",e.target.value,true)
+                    updateDocumentSetting(currentFileStore.idx,"paperType",e.target.value,currentFileStore.isNew)
                   }>
                   <option>A3</option>
                   <option>A4</option>
@@ -85,7 +96,7 @@ const PrintSettings = () => {
                   type="number"
                   value={selectedFile.fromPage}
                   onChange={(e) =>
-                    updateDocumentSetting(currentFileIdx,"fromPage",Math.max(1, e.target.value),true)
+                    updateDocumentSetting(currentFileStore.idx,"fromPage",Math.max(1, e.target.value),currentFileStore.isNew)
                   }
                 />
               </label>
@@ -95,7 +106,7 @@ const PrintSettings = () => {
                   type="number"
                   value={selectedFile.toPage}
                   onChange={(e) =>
-                    updateDocumentSetting(currentFileIdx,"toPage",Math.max(1, e.target.value),true)
+                    updateDocumentSetting(currentFileStore.idx,"toPage",Math.max(1, e.target.value),currentFileStore.isNew)
                   }
                 />
               </label>
@@ -111,7 +122,7 @@ const PrintSettings = () => {
                     value="doc"
                     checked={selectedFile.isLandscape === false}
                     onChange={() =>
-                      updateDocumentSetting(currentFileIdx,"isLandscape",false,true)
+                      updateDocumentSetting(currentFileStore.idx,"isLandscape",false,currentFileStore.isNew)
                     }
                   />
                   <label htmlFor="doc">Dọc</label>
@@ -122,7 +133,7 @@ const PrintSettings = () => {
                     value="ngang"
                     checked={selectedFile.isLandscape === true}
                     onChange={() =>
-                      updateDocumentSetting(currentFileIdx,"isLandscape",true,true)}
+                      updateDocumentSetting(currentFileStore.idx,"isLandscape",true,currentFileStore.isNew)}
                   />
                   <label htmlFor="ngang">Ngang</label>
                 </div>
@@ -138,7 +149,7 @@ const PrintSettings = () => {
                       type="number"
                       value={selectedFile.leftSide}
                       onChange={(e) =>
-                        updateDocumentSetting(currentFileIdx,"leftSide",Math.max(1, e.target.value),true)
+                        updateDocumentSetting(currentFileStore.idx,"leftSide",Math.max(1, e.target.value),currentFileStore.isNew)
 
                       }
                     />
@@ -149,7 +160,7 @@ const PrintSettings = () => {
                       type="number"
                       value={selectedFile.rightSide}
                       onChange={(e) =>
-                        updateDocumentSetting(currentFileIdx,"rightSide",Math.max(1, e.target.value),true)
+                        updateDocumentSetting(currentFileStore.idx,"rightSide",Math.max(1, e.target.value),currentFileStore.isNew)
                       }
                     />
                   </label>
@@ -161,7 +172,7 @@ const PrintSettings = () => {
                       type="number"
                       value={selectedFile.topSide}
                       onChange={(e) =>
-                        updateDocumentSetting(currentFileIdx,"topSide",Math.max(1, e.target.value),true)
+                        updateDocumentSetting(currentFileStore.idx,"topSide",Math.max(1, e.target.value),currentFileStore.isNew)
                       }
                     />
                   </label>
@@ -171,7 +182,7 @@ const PrintSettings = () => {
                       type="number"
                       value={selectedFile.bottomSide}
                       onChange={(e) =>
-                        updateDocumentSetting(currentFileIdx,"bottomSide",Math.max(1, e.target.value),true)
+                        updateDocumentSetting(currentFileStore.idx,"bottomSide",Math.max(1, e.target.value),currentFileStore.isNew)
                       }
                     />
                   </label>

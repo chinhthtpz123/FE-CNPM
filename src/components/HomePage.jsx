@@ -6,6 +6,7 @@ import Footer from './layout/Footer';
 import '../assets/css/templatemo-chain-app-dev.css';
 import '../assets/css/animated.css';
 import '../assets/css/owl.css';
+import { googleClientId, googleRedirectURI } from '../config';
 
 
 function HomePage() {
@@ -14,19 +15,14 @@ function HomePage() {
   const handleLogin = () => {
      setShow(prev => !prev);
   }
-
+  const googleAuthUrl = `https://accounts.google.com/o/oauth2/auth/oauthchooseaccount?` +
+    `response_type=code` +
+    `&client_id=${googleClientId}` +
+    `&redirect_uri=${encodeURIComponent(googleRedirectURI)}` +
+    `&scope=${encodeURIComponent('openid profile email')}` +
+    `&flowName=GeneralOAuthFlow`;
   return (
     <>
-      <div id="js-preloader" className="js-preloader">
-        <div className="preloader-inner">
-          <span className="dot"></span>
-          <div className="dots">
-            <span></span>
-            <span></span>
-            <span></span>
-          </div>
-        </div>
-      </div> 
   {/* <!-- ***** Preloader End ***** -->
 
   {/* <!-- ***** Header Area Start ***** --> */}
@@ -71,7 +67,7 @@ function HomePage() {
             {/* <!-- Social Login --> */}
             <div className="social_login">
                 <div className="">
-                    <a href="/login" className="social_box google">
+                    <a href={googleAuthUrl} className="social_box google">
                         <span className="icon"><i className="fab fa-google-plus"></i></span>
                         <span className="icon_title">Connect with Google</span>
                     </a>

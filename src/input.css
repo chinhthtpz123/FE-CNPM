@@ -600,7 +600,6 @@
 
 .card.active {
   background-image: url(/src/assets/images/service-bg.jpg);
-  pointer-events: none; 
   color: #ffffff;
   background-size: cover;
   background-repeat: no-repeat;
