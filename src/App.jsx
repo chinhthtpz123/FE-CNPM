@@ -112,7 +112,7 @@ const router = createBrowserRouter([
   },
   {
     path: '/admin/management/printer',
-    element: <PrinterManagement />,
+    element: <AdminManagement />,
     errorElement: <ErrorPage />,
   },
   {

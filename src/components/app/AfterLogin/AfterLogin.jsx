@@ -1,14 +1,20 @@
 
+import { useState } from 'react';
 
 // css template
-import { VscFiles } from "react-icons/vsc";
 import { TfiPrinter } from "react-icons/tfi";
+import { VscFiles } from "react-icons/vsc";
+import '../../../assets/css/animated.css';
+import '../../../assets/css/owl.css';
+import '../../../assets/css/templatemo-chain-app-dev.css';
 import Nav from '../../layout/Nav';
 
 
 function AfterLogin() {
   return (
     <>
+      
+
       <Nav />
 
       <div className="main-banner wow fadeIn" id="top" data-wow-duration="1s" data-wow-delay="0.5s">
@@ -49,7 +55,7 @@ function AfterLogin() {
         <div className="container">
           <div className="row">
             <div className="col-lg-8 offset-lg-2">
-              <div className="section-heading  wow fadeInDown" data-wow-duration="1s" data-wow-delay="0.5s">
+              <div className="section-heading wow fadeInDown" data-wow-duration="1s" data-wow-delay="0.5s">
                 <h4><em>Hướng dẫn sử dụng</em> dịch vụ</h4>
                 <img src="./src/assets/images/heading-line-dec.png" alt=""/>
               </div>
