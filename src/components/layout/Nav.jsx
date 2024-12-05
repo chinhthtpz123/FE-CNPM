@@ -31,36 +31,6 @@ const Nav = () => {
 
         {/* Logo */}
         <img className="tw-w-11 tw-h-auto" src={PrinterImg} alt="printer" />
-        
-        {/* Navigation Links */}
-        <ul className="tw-flex tw-space-x-6 tw-ml-6">
-            <li>
-              <NavLink
-                to="/home"
-                className={({ isActive }) =>
-                  isActive
-                    ? "tw-text-blue-600 tw-bg-blue-100 tw-px-4 tw-py-2 tw-rounded-md"
-                    : "tw-text-gray-700"
-                }
-              >
-                Home
-              </NavLink>
-            </li>
-            <li>
-              <NavLink
-                to="/upload"
-                className={({ isActive }) =>
-                  isActive
-                    ? "tw-text-blue-600 tw-bg-blue-100 tw-px-4 tw-py-2 tw-rounded-md"
-                    : "tw-text-gray-700"
-                }
-                end
-              >
-                Upload
-              </NavLink>
-            </li>  
-                
-          </ul>
       </div>
 
       {/* Right Section */}
