@@ -90,17 +90,17 @@ const router = createBrowserRouter([
     element: <PaperShop />,
   },
   {
-    path: '/employee/print/detail',
+    path: '/employee/print/detail/:id',
     element: <PrintManagement />,
     errorElement: <ErrorPage />,
   },
   {
-    path: '/customer/print/detail',
+    path: '/customer/print/detail/:id',
     element: <PrintManagementCus />,
     errorElement: <ErrorPage />,
   },
   {
-    path: '/admin/print/detail',
+    path: '/admin/print/detail/:id',
     element: <AdminManagementDetail />,
     errorElement: <ErrorPage />,
   },

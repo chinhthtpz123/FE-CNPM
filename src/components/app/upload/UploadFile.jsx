@@ -126,7 +126,7 @@ const FileUpload = () => {
     const newFile = fileTransaction.filter((fileResult)=>fileResult.isNew);
     const oldFile = fileTransaction.filter((fileResult)=>!fileResult.isNew);
     
-    initTransaction(fileTransaction[0],newFile,oldFile);
+    initTransaction(fileTransaction[0].name,newFile,oldFile);
     navigate('/upload/printer' , {replace: true})
   }
 
