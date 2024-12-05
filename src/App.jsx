@@ -136,6 +136,7 @@ function App() {
     //     <Route path="/" element={<HomePage />}/>
     //   </Routes>
     // </BrowserRouter>
+    
     <RouterProvider 
       router={router} 
       future={{
@@ -143,7 +144,7 @@ function App() {
       }
     }/>
 
-  )
+  );
 }
 
 export default App;

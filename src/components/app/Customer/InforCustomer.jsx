@@ -51,7 +51,9 @@ const CustomerInfo = () => {
       { id: 1, name: "Tài liệu A.pdf", size: "2MB" },
       { id: 2, name: "Tài liệu B.docx", size: "1.5MB" },
       { id: 3, name: "Tài liệu C.xlsx", size: "3MB" },
-    ]
+    ],
+    
+    
   };
 
   return (
@@ -116,7 +118,7 @@ const CustomerInfo = () => {
                 <li
                   key={index}
                   onClick={() => handleDocumentClick(doc)}
-                  className="tw-mb-6" // Thêm khoảng cách giữa các tài liệu
+                  className="tw-mb-6"
                 >
                   <span
                     className={`tw-document-item tw-cursor-pointer tw-p-2 tw-text-black hover:tw-text-blue-500`}

@@ -1395,6 +1395,21 @@ video {
   padding-bottom: 14px;
 }
 
+.tw-px-1 {
+  padding-left: 0.25rem;
+  padding-right: 0.25rem;
+}
+
+.tw-py-0 {
+  padding-top: 0px;
+  padding-bottom: 0px;
+}
+
+.tw-px-5 {
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+}
+
 .tw-text-left {
   text-align: left;
 }

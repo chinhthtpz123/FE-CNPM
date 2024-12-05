@@ -7,6 +7,7 @@ import { LuNewspaper } from "react-icons/lu";
 import { Link } from "react-router-dom";
 
 const EmployeeInfo = () => {
+    
   // Dữ liệu giả định cho thông tin nhân viên và các máy in
   const employee = {
     name: "Nguyễn Văn A",
