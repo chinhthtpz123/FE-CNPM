@@ -1,13 +1,12 @@
 
 import { useState } from 'react';
-import Footer from '../../layout/Footer';
 
 // css template
-import '../../../assets/css/templatemo-chain-app-dev.css';
+import { TfiPrinter } from "react-icons/tfi";
+import { VscFiles } from "react-icons/vsc";
 import '../../../assets/css/animated.css';
 import '../../../assets/css/owl.css';
-import { VscFiles } from "react-icons/vsc";
-import { TfiPrinter } from "react-icons/tfi";
+import '../../../assets/css/templatemo-chain-app-dev.css';
 import Nav from '../../layout/Nav';
 
 
@@ -20,16 +19,6 @@ function AfterLogin() {
 
   return (
     <>
-      <div id="js-preloader" className="js-preloader">
-        <div className="preloader-inner">
-          <span className="dot"></span>
-          <div className="dots">
-            <span></span>
-            <span></span>
-            <span></span>
-          </div>
-        </div>
-      </div> 
 
       <Nav />
 
@@ -45,11 +34,11 @@ function AfterLogin() {
                         <h2>HCMUT SPSS</h2>
                         <p>Dịch vụ in ấn thông minh dành cho sinh viên trường Đại học Bách khoa - ĐHQG-HCM</p>
                       </div>
-                      <div class="col-lg-12">
-                        <div class="white-button first-button scroll-to-section">
+                      <div className="col-lg-12">
+                        <div className="white-button first-button scroll-to-section">
                           <a href="#contact">Mua giấy in <VscFiles className='tw-ml-1'/></a> 
                         </div>
-                        <div class="white-button scroll-to-section">
+                        <div className="white-button scroll-to-section">
                           <a href="#contact">In tài liệu <TfiPrinter className='tw-ml-1'/></a>
                         </div>
                       </div>
@@ -71,7 +60,7 @@ function AfterLogin() {
         <div className="container">
           <div className="row">
             <div className="col-lg-8 offset-lg-2">
-              <div className="section-heading  wow fadeInDown" data-wow-duration="1s" data-wow-delay="0.5s">
+              <div className="section-heading wow fadeInDown" data-wow-duration="1s" data-wow-delay="0.5s">
                 <h4><em>Hướng dẫn sử dụng</em> dịch vụ</h4>
                 <img src="./src/assets/images/heading-line-dec.png" alt=""/>
               </div>
