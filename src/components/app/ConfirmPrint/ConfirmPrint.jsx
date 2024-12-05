@@ -6,7 +6,7 @@ import { apiBaseUrl } from '../../../config';
 
 const TransactionConfirmation = () => {
   const {newDocuments, name, printerId,oldDocuments} = useTransactionStore();
-  console.log(newDocuments);
+  console.log(typeof oldDocuments);
   const navigate = useNavigate();
   const files = [...newDocuments,...oldDocuments].map((document)=>({
     name: document.metadata.name,
@@ -18,12 +18,11 @@ const TransactionConfirmation = () => {
     const createTransaction = async() =>{
       const api = `${apiBaseUrl}/transactions/create`;
       const token = localStorage.getItem("accessTokenCustomer");
-      console.log(token);
       const body= {
         printerId,
         name,
         newDocuments: newDocuments.map((document)=>document.metadata),
-        oldDocuments:oldDocuments.map((document)=>document.metadata),
+        oldDocuments: oldDocuments.map((document)=>document.metadata),
       }
       console.log(body.oldDocuments);
       const res = await axios.post(api,body,{
@@ -35,7 +34,6 @@ const TransactionConfirmation = () => {
         await  Promise.all(newDocuments.map(async (document,idx) =>{
           const formData = new FormData();
           formData.append("file",document.file);
-          console.log(document.file.size);
           await axios.put(res.data.data.urls[idx],formData,{
             headers: {
               "Content-Type": "multipart/form-data", // Adjust based on file type
@@ -43,14 +41,12 @@ const TransactionConfirmation = () => {
             },
           });
         }));
-        console.log("sucesssssss");
-
+        navigate(`/customer/print/detail/${res.data.data.id.value}`)
       } else {
         console.log("Faileddd");
       }
     }
     await createTransaction();
-    window.location.href="http://localhost:3000/upload"
   }
 
   const handleBack = () => {

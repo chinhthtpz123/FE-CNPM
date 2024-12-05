@@ -1,39 +1,116 @@
-import React, { useState, useEffect } from "react";
+import  { useState, useEffect } from "react";
 import Nav from "../../layout/Nav";
-import PrintSettings from "../Printsetting/PrintSettings";
 import Footer from "../../layout/Footer";
 import { FaRegUserCircle } from "react-icons/fa";
 import { HiPrinter } from "react-icons/hi2";
 import { LuNewspaper } from "react-icons/lu";
 import { HiOutlineInformationCircle } from "react-icons/hi";
 import { IoDocumentsOutline } from "react-icons/io5";
+import axios from "axios";
+import { apiBaseUrl } from "../../../config";
+import { useParams } from "react-router-dom";
 
 const PrintManagement = () => {
+  const {id} = useParams();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedDocument, setSelectedDocument] = useState(null);
   const [status, setStatus] = useState("unconfirmed");
   const [timelinePosition, setTimelinePosition] = useState(0);
   const [timestamps, setTimestamps] = useState({});
 
-  const documents = [
-    { name: "Tài liệu học tập.pdf", size: "2.3 MB", pages: 10 },
-    { name: "Tài liệu báo cáo.pdf", size: "3.5 MB", pages: 15 },
-    { name: "Tài liệu nghiên cứu.pdf", size: "1.8 MB", pages: 8 },
-  ];
-  const printerInfo = {
-    name: "Máy in Canon 123",
-    status: "ONLINE",
-    location: "Hồ Chí Minh",
-    code: "IN12345",
-  };
 
-  useEffect(() => {
-    const currentTime = new Date().toLocaleString();
-    setTimestamps((prevTimestamps) => ({
-      ...prevTimestamps,
-      created: currentTime,
-    }));
-  }, []);
+  const [employee,setEmployee] = useState({});
+  const [printerInfo,setPrinterInfo] = useState({});
+  const [transaction,setTransaction] = useState({});
+  const [documents,setDocuments] = useState([]);
+
+
+  useEffect(()=>{
+    const fetchTransaction = async()=>{
+      const api = `${apiBaseUrl}/transactions/${id}`;
+      const token = localStorage.getItem("accessTokenCustomer");
+      const res = await axios.get(api,{
+        headers:{
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if(res.status === 200) {
+        const transactionRes = res.data.data;
+        setTransaction({
+          id: transactionRes.id.value,
+          name: transactionRes.name,
+          transactionId: transactionRes.transactionId,
+          totalA3: transactionRes.transactionPaperQuantities.A3?.quantity || 0,
+          totalA4: transactionRes.transactionPaperQuantities.A4?.quantity || 0,
+          totalA5: transactionRes.transactionPaperQuantities.A5?.quantity || 0,
+        });
+        setStatus(transactionRes.status);
+        setTimestamps({
+          createdAt: transactionRes.createdAt ? new Date(transactionRes.createdAt).toLocaleString():null,
+          acceptedAt: transactionRes.acceptedAt? new Date(transactionRes.acceptedAt).toLocaleString():null,
+          doneAt:transactionRes.doneAt?new Date(transactionRes.doneAt).toLocaleString():null,
+        });
+        setDocuments(transactionRes.transactionDocuments.map((doc,index)=>({
+          id: doc.id,
+          name: doc.name,
+          ...doc.documentDetail,
+          link: transactionRes.urls[index],
+        })));
+        if(transactionRes.status === "PENDING") setTimelinePosition(0);
+        else if(transactionRes.status === 'PROCESS') setTimelinePosition(1);
+        else if(transactionRes.status === 'DONE') setTimelinePosition(2);
+      } else {
+        console.log(res.data.message);
+      }
+    }
+    fetchTransaction();
+  },[]);
+  useEffect(()=>{
+    const fetchEmployee = async ()=>{
+      const api = `${apiBaseUrl}/transactions/${id}/employee`;
+      const token = localStorage.getItem("accessTokenCustomer");
+      const res = await axios.get(api,{
+        headers:{
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if(res.status === 200) {
+        const customerRes = res.data.data;
+        setEmployee({
+          id: customerRes.id.value,
+          name: `${customerRes.name.firstName} ${customerRes.name.lastName}`,
+          email: customerRes.email.value,
+          phoneNumber: customerRes.phoneNumber,
+        })
+      } else{
+        console.log(res.data.message);
+      }
+    };
+    fetchEmployee();
+  },[]);
+
+  useEffect(()=>{
+    const fetchPrinter = async()=>{
+      const api = `${apiBaseUrl}/transactions/${id}/printer`;
+      const token = localStorage.getItem("accessTokenCustomer");
+      const res = await axios.get(api,{
+        headers:{
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if(res.status === 200) {
+        const printerRes = res.data.data;
+        setPrinterInfo({
+          id: printerRes.id.value,
+          name: printerRes.name,
+          code: printerRes.code,
+          status: printerRes.status,
+          location: printerRes.location,
+        });
+      }
+    }
+    fetchPrinter();
+  },[])
 
   const handleDocumentClick = (document) => {
     setSelectedDocument(document);
@@ -44,55 +121,40 @@ const PrintManagement = () => {
     setIsModalOpen(false);
     setSelectedDocument(null);
   };
-  const handleDownload = (document) => {
-    const fileUrl = `/path/to/your/files/${document.name}`;
+  const handleDownload = async (fileUrl, name) => {
+    try {
+      const response = await axios.get(fileUrl, {
+        responseType: "blob", // Ensure the response is treated as a binary file
+      });
 
-    const link = document.createElement("a");
-    link.href = fileUrl;
-    link.download = document.name;
-    link.click();
-  };
-  const handleStatusChange = () => {
-    const currentTime = new Date().toLocaleString();
-
-    if (status === "unconfirmed") {
-      setStatus("confirmed");
-      setTimelinePosition(1);
-      setTimestamps((prevTimestamps) => ({
-        ...prevTimestamps,
-        accessed: currentTime,
-      }));
-    } else if (status === "confirmed") {
-      setStatus("completed");
-      setTimelinePosition(2);
-      setTimestamps((prevTimestamps) => ({
-        ...prevTimestamps,
-        done: currentTime,
-      }));
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", name); // Specify the filename
+      document.body.appendChild(link);
+      link.click();
+      link.remove(); // Clean up
+    } catch (error) {
+      console.error("File download failed:", error);
     }
   };
 
-  const getStatusColor = () => {
-    if (timelinePosition === 0) return "text-red-500"; // Created - red
-    if (timelinePosition === 1) return "text-green-500"; // Accessed - green
-    if (timelinePosition === 2) return "text-purple-500"; // Done - purple
-  };
 
   return (
     <div>
       <Nav />
-      <div className="tw-min-w-max tw-ml-32 tw-mt-20 tw-flex tw-justify-center tw-items-start tw-gap-8 tw-px-4 tw-py-6 w-full">
+      <div className="tw-mt-20 tw-main-content tw-flex tw-justify-center tw-items-start tw-gap-8 tw-px-4 tw-py-6 w-full">
         {/* Column 1: Transaction Info */}
         <div className="tw-w-1/3 tw-p-6 tw-bg-white tw-shadow-xl tw-rounded-lg">
           {/* Transaction Name */}
           <div className="tw-info-card tw-mb-6">
             <div className="tw-text-center tw-overflow-hidden tw-border tw-border-gray-300 tw-rounded-lg">
               <h3 className="tw-text-sm tw-py-2 tw-bg-blue-200 tw-font-semibold tw-text-blue-600 tw-mb-4 tw-flex tw-items-center tw-justify-center ">
-                Tên giao dịch
+                {transaction.name}
                 <LuNewspaper className="tw-ml-2 tw-text-lg" />
               </h3>
               <p className="tw-text-sm tw-text-gray-700">
-                <span className="tw-font-bold">Giao dịch </span>#12345
+                <span className="tw-font-bold">Giao dịch </span>#{transaction.transactionId}
               </p>
             </div>
           </div>
@@ -106,16 +168,13 @@ const PrintManagement = () => {
                 {/* Icon with margin-right */}
               </h3>
               <p className="tw-text-sm tw-text-gray-700">
-                <span className="tw-font-bold">Tên:</span> Chill Guys
+                <span className="tw-font-bold">Tên:</span> {employee.name}
               </p>
               <p className="tw-text-sm tw-text-gray-700">
-                <span className="tw-font-bold">Mã nhân viên:</span> Chill Guys
+                <span className="tw-font-bold">Email:</span> {employee.email}
               </p>
               <p className="tw-text-sm tw-text-gray-700">
-                <span className="tw-font-bold">Email:</span> chillguys@example.com
-              </p>
-              <p className="tw-text-sm tw-text-gray-700">
-                <span className="tw-font-bold">Số điện thoại:</span> 0901234567
+                <span className="tw-font-bold">Số điện thoại:</span> {employee.phoneNumber}
               </p>
             </div>
           </div>
@@ -169,18 +228,19 @@ const PrintManagement = () => {
     {/* Danh sách loại giấy đã sử dụng */}
     <ul className="tw-text-sm tw-text-gray-700 tw-mb-4">
       <li>
-        <span className="tw-font-bold">A3:</span> 10 tờ
+        <span className="tw-font-bold">A3:</span> {transaction.totalA3} tờ
       </li>
       <li>
-        <span className="tw-font-bold">A4:</span> 50 tờ
+        <span className="tw-font-bold">A4:</span> {transaction.totalA4} tờ
       </li>
       <li>
-        <span className="tw-font-bold">A5:</span> 20 tờ
+        <span className="tw-font-bold">A5:</span> {transaction.totalA5} tờ
       </li>
     </ul>
             <p className="tw-text-sm tw-text-gray-700">
               <span className="tw-font-bold"> Trạng thái: </span> 
-              <span className="tw-inline-block tw-px-3 tw-py-1 tw-border tw-text-sm tw-font-semibold tw-rounded-full tw-bg-green-400"> ...</span>
+
+              <span className="tw-inline-block tw-px-3 tw-py-1 tw-border tw-text-sm tw-font-semibold tw-rounded-full tw-bg-green-400"> {status}</span>
             </p>
             
             {/* Timeline Container */}
@@ -249,7 +309,7 @@ const PrintManagement = () => {
                 >
                   Created
                 </p>
-                {timestamps.created && (
+                {timestamps.createdAt && (
                   <>
                     <p
                       className={`tw-text-black ${
@@ -258,7 +318,7 @@ const PrintManagement = () => {
                           : "tw-text-gray-500"
                       }`}
                     >
-                      {timestamps.created.split(",")[0]}
+                      {timestamps.createdAt.split(",")[0]}
                     </p>
                     <p
                       className={`tw-text-black ${
@@ -267,7 +327,7 @@ const PrintManagement = () => {
                           : "tw-text-gray-500"
                       }`}
                     >
-                      {timestamps.created.split(",")[1]}
+                      {timestamps.createdAt.split(",")[1]}
                     </p>
                   </>
                 )}
@@ -280,9 +340,9 @@ const PrintManagement = () => {
                       : "tw-text-gray-500"
                   }`}
                 >
-                  Accessed
+                  Accept
                 </p>
-                {timestamps.accessed && (
+                {timestamps.acceptedAt && (
                   <>
                     <p
                       className={`tw-text-black ${
@@ -291,7 +351,7 @@ const PrintManagement = () => {
                           : "tw-text-gray-500"
                       }`}
                     >
-                      {timestamps.created.split(",")[0]}
+                      {timestamps.acceptedAt.split(",")[0]}
                     </p>
                     <p
                       className={`tw-text-black ${
@@ -300,7 +360,7 @@ const PrintManagement = () => {
                           : "tw-text-gray-500"
                       }`}
                     >
-                      {timestamps.created.split(",")[1]}
+                      {timestamps.acceptedAt.split(",")[1]}
                     </p>
                   </>
                 )}
@@ -315,7 +375,7 @@ const PrintManagement = () => {
                 >
                   Done
                 </p>
-                {timestamps.done && (
+                {timestamps.doneAt && (
                   <>
                     <p
                       className={`tw-text-black ${
@@ -324,7 +384,7 @@ const PrintManagement = () => {
                           : "tw-text-gray-500"
                       }`}
                     >
-                      {timestamps.created.split(",")[0]}
+                      {timestamps.doneAt.split(",")[0]}
                     </p>
                     <p
                       className={`tw-text-black ${
@@ -333,7 +393,7 @@ const PrintManagement = () => {
                           : "tw-text-gray-500"
                       }`}
                     >
-                      {timestamps.created.split(",")[1]}
+                      {timestamps.doneAt.split(",")[1]}
                     </p>
                   </>
                 )}
@@ -361,8 +421,8 @@ const PrintManagement = () => {
                   <span
                     className={`tw-document-item tw-cursor-pointer tw-p-2 tw-text-black hover:tw-text-blue-500`}
                   >
-                    {doc.name} - {doc.size} - {doc.pages} trang
-                  </span>
+                    {doc.name} - {doc.paperType} - {doc.numOfCopies} Bản
+                    </span>
                   <button
                     className="tw-bg-blue-500 tw-text-white tw-ml-1 px-2 py-0 text-sm tw-rounded-full hover:bg-blue-600"
                     onClick={(e) => {
@@ -420,18 +480,18 @@ const PrintManagement = () => {
                     </p>
                     <p className="tw-mb-4">
                       <span className="tw-font-bold tw-text-black">
-                        Kích thước:
+                        Số bản:
                       </span>{" "}
                       <span className="tw-text-black">
-                        {selectedDocument.size}
+                        {selectedDocument.numOfCopies}
                       </span>
                     </p>
                     <p className="tw-mb-4">
                       <span className="tw-font-bold tw-text-black">
-                        Số lượng trang:
+                        In 1 mặt:
                       </span>{" "}
                       <span className="tw-text-black">
-                        {selectedDocument.pages}
+                      {selectedDocument.isOneSide ? 'Có': 'Không'}
                       </span>
                     </p>
                   </div>
@@ -456,18 +516,18 @@ const PrintManagement = () => {
                       </span>
                       <div className="tw-text-black">
                         <p className="tw-inline-block tw-mr-6 tw-text-black">
-                          Top: 10mm
+                          Top: {selectedDocument.topSide}mm
                         </p>
                         <p className="tw-inline-block tw-text-black">
-                          Bottom: 10mm
+                          Bottom: {selectedDocument.bottomSide}mm
                         </p>
                       </div>
                       <div className="tw-text-black">
                         <p className="tw-inline-block tw-mr-6 tw-text-black">
-                          Left: 15mm
+                          Left: {selectedDocument.leftSide}mm
                         </p>
                         <p className="tw-inline-block tw-text-black">
-                          Right: 15mm
+                          Right: {selectedDocument.rightSide}mm
                         </p>
                       </div>
                     </div>
@@ -488,7 +548,8 @@ const PrintManagement = () => {
                 <div className="tw-mt-6 tw-flex tw-justify-center">
                   <button
                     className="tw-bg-blue-500 tw-text-white tw-px-6 tw-py-2 tw-rounded-full hover:tw-bg-blue-700 tw-z-10"
-                    onClick={() =>  handleDownload(doc)}
+
+                    onClick={() =>  handleDownload(selectedDocument.link,selectedDocument.name)}
                   >
                     Tải tài liệu
                   </button>

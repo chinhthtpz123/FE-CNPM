@@ -101,12 +101,12 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
   },
   {
-    path: '/employee/print/detail',
+    path: '/employee/print/detail/:id',
     element: <PrintManagement />,
     errorElement: <ErrorPage />,
   },
   {
-    path: '/customer/print/detail',
+    path: '/customer/print/detail/:id',
     element: <PrintManagementCus />,
     
     errorElement: <ErrorPage />,
@@ -137,7 +137,7 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
   },
   {
-    path: '/admin/print/detail',
+    path: '/admin/print/detail/:id',
     element: <AdminManagementDetail />,
     errorElement: <ErrorPage />,
   },

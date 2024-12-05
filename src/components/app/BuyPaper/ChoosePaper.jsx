@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import  { useState } from 'react';
 import Nav from '../../layout/Nav';
 import Footer from '../../layout/Footer';
 import { ToastContainer, toast } from 'react-toastify';
@@ -64,4 +64,3 @@ const ChoosePaper = () => {
   };
   
   export default ChoosePaper;
-  
