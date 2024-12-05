@@ -15,12 +15,15 @@ import ConfirmPrint from "./components/app/ConfirmPrint/ConfirmPrint.jsx";
 // import PrinterTransaction from "./components/app/transaction/PrinterTransaction.jsx";
 import PrintManagement from "./components/app/PrintManagement/PrintManagement.jsx";
 import PrintManagementCus from "./components/app/PrintManagement/PrintManagement-Cus.jsx";
+import PrintManagementAdmin from "./components/app/PrintManagement/PrintManagementAdmin.jsx";
 import TransactionManagement from "./components/app/Employee/TransactionManagement.jsx";
 import AfterLogin from "./components/app/AfterLogin/AfterLogin.jsx";
 import ChoosePaper from "./components/app/BuyPaper/ChoosePaper.jsx";
 import PaperShop from "./components/app/BuyPaper/PaperShop.jsx";
-
-
+import ChoosePrinter from "./components/app/Printer/Printerchoose.jsx";
+import InforPrinter from "./components/app/Printer/InforPrinter.jsx";
+import EmployeeInfo from "./components/app/Employee/Infor.jsx";
+import CustomerInfo from "./components/app/Customer/InforCustomer.jsx";
 const router = createBrowserRouter([
   {
     path: '/',
@@ -70,10 +73,19 @@ const router = createBrowserRouter([
   {
     path: '/managementcus',
     element: <PrintManagementCus />,
-    // path: '/employee/management/transaction',
-    // element: <TransactionManagement />,
+    
     errorElement: <ErrorPage />,
   },
+  {
+    path: '/employee/management/transaction',
+    element: <TransactionManagement />,
+    errorElement: <ErrorPage />,
+  },
+  {
+  path: '/managementad',
+  element: <PrintManagementAdmin />,
+  errorElement: <ErrorPage />,
+},
   {
     path: '/afterlogin',
     element: <AfterLogin />,
@@ -87,6 +99,31 @@ const router = createBrowserRouter([
   {
     path: '/papershop',
     element: <PaperShop />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: '/chooseprinter',
+    element: <ChoosePrinter />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: '/chooseprinter',
+    element: <ChoosePrinter />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: '/inforprinter',
+    element: <InforPrinter/>,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: '/inforemployee',
+    element: <EmployeeInfo/>,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: '/inforcustomer',
+    element: <CustomerInfo/>,
     errorElement: <ErrorPage />,
   }
 ]);

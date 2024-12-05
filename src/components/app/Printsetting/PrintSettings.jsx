@@ -1,6 +1,6 @@
 
 import  { useState } from 'react';
-import Header from '../../layout/Nav';
+import Nav from '../../layout/Nav';
 import imageHcmut from '../../../../public/images/HCMUT-BachKhoa-logo.png';
 import { Link } from 'react-router-dom';
 import { useTransactionStore } from './PrintTransactionStore';
@@ -18,7 +18,7 @@ const PrintSettings = () => {
   
   return (
     <>
-     <Header />
+     <Nav />
      <div className="tw-flex tw-ml-[240px] tw-mt-[73px]">
       <div className="tw-border tw-border-gray-200 tw-h-full tw-shadow-md tw-mt-12 tw-p-4 tw-rounded-lg">
         <div className="tw-text-2xl tw-font-medium tw-text-customBlue tw-mb-3">Danh sach file</ div>
