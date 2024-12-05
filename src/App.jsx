@@ -23,8 +23,17 @@ import AdminManagementDetail from "./components/app/DetailTransaction/AdminManag
 import UserManagement from "./components/app/UserManagement/UserManagement.jsx";
 import AdminManagement from "./components/app/Transaction/AdminMangement.jsx"
 import PrinterManagement from "./components/app/Transaction/PrinterManagement.jsx";
-import InforAccount from "./components/app/InforAccount.jsx";
+import CusAccount from "./components/app/InforAccount/CusAccount.jsx";
 
+// import PrinterList from "./components/app/transaction/PrinterList.jsx";
+// import PrinterTransaction from "./components/app/transaction/PrinterTransaction.jsx";
+// import PrintManagement from "./components/app/PrintManagement/PrintManagement.jsx";
+// import PrintManagementCus from "./components/app/PrintManagement/PrintManagement-Cus.jsx";
+// import PrintManagementAdmin from "./components/app/PrintManagement/PrintManagementAdmin.jsx";
+
+// import ChoosePrinter from "./components/app/Printer/Printerchoose.jsx";
+import InforPrinter from "./components/app/Printer/InforPrinter.jsx";
+import EmployeeInfo from "./components/app/InforAccount/EmployAccount.jsx";
 const router = createBrowserRouter([
   {
     path: '/',
@@ -89,6 +98,7 @@ const router = createBrowserRouter([
   {
     path: '/paper/shop',
     element: <PaperShop />,
+    errorElement: <ErrorPage />,
   },
   {
     path: '/employee/print/detail',
@@ -98,6 +108,32 @@ const router = createBrowserRouter([
   {
     path: '/customer/print/detail',
     element: <PrintManagementCus />,
+    
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: '/employee/management/transaction',
+    element: <TransactionManagement />,
+    errorElement: <ErrorPage />,
+  },
+//   {
+//   path: '/managementad',
+//   element: <PrintManagementAdmin />,
+//   errorElement: <ErrorPage />,
+// },
+  {
+    path: '/afterlogin',
+    element: <AfterLogin />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: '/printer/infor',
+    element: <InforPrinter/>,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: '/account/employee',
+    element: <EmployeeInfo/>,
     errorElement: <ErrorPage />,
   },
   {
@@ -117,7 +153,7 @@ const router = createBrowserRouter([
   },
   {
     path: '/account/infor',
-    element: <InforAccount />,
+    element: <CusAccount />,
     errorElement: <ErrorPage />,
   }
 ]);
@@ -130,6 +166,7 @@ function App() {
     //     <Route path="/" element={<HomePage />}/>
     //   </Routes>
     // </BrowserRouter>
+    
     <RouterProvider 
       router={router} 
       future={{
@@ -137,7 +174,7 @@ function App() {
       }
     }/>
 
-  )
+  );
 }
 
 export default App;

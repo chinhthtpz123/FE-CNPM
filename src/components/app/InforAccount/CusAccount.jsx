@@ -1,12 +1,12 @@
 import React, { useState } from "react"; // Make sure to import useState
-import Nav from '../layout/Nav';
-import Footer from "../layout/Footer";
+import Nav from '../../layout/Nav';
+import Footer from "../../layout/Footer";
 import { FaRegUserCircle } from "react-icons/fa";
 import { LuNewspaper } from "react-icons/lu";
 import { Link } from "react-router-dom";
 import { IoDocumentsOutline } from "react-icons/io5";
 
-const InforAccount = () => {
+const CusAccount = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedDocument, setSelectedDocument] = useState(null);
 
@@ -226,4 +226,4 @@ const InforAccount = () => {
   );
 };
 
-export default InforAccount;
+export default CusAccount;
