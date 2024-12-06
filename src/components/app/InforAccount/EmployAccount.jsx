@@ -1,42 +1,85 @@
-import React from "react";
+import  { useEffect, useState } from "react";
 import Nav from '../../layout/Nav';
 import Footer from "../../layout/Footer";
 import { FaRegUserCircle } from "react-icons/fa";
 import { HiPrinter } from "react-icons/hi2";
 import { LuNewspaper } from "react-icons/lu";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import { apiBaseUrl } from "../../../config";
+import axios from "axios";
 
 const EmployAccount = () => {
-    
+  const {id} = useParams();
   // Dữ liệu giả định cho thông tin nhân viên và các máy in
-  const employee = {
-    name: "Nguyễn Văn A",
-    employeeId: "NV12345", // Mã nhân viên
-    email: "nguyenvana@example.com",
-    phone: "0123456789", // Số điện thoại
-    startDate: new Date(2020, 0, 1), // Ngày bắt đầu làm việc
-    printerList: ["Máy in Canon 123", "Máy in HP 456", "Máy in Epson 789", "Máy in Samsung 101", "Máy in Brother 102", "Máy in Canon 104"], // Thêm nhiều máy in giả
-    transactions: [
-      { id: 1, name: "Giao dịch 1", timestamp: new Date() },
-      { id: 2, name: "Giao dịch 2", timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24) },
-      { id: 3, name: "Giao dịch 3", timestamp: new Date(Date.now() - 1000 * 60 * 60 * 48) },
-      { id: 4, name: "Giao dịch 4", timestamp: new Date(Date.now() - 1000 * 60 * 60 * 72) },
-      { id: 5, name: "Giao dịch 5", timestamp: new Date(Date.now() - 1000 * 60 * 60 * 96) },
-      { id: 6, name: "Giao dịch 6", timestamp: new Date(Date.now() - 1000 * 60 * 60 * 120) },
-      { id: 1, name: "Giao dịch 1", timestamp: new Date() },
-      { id: 2, name: "Giao dịch 2", timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24) },
-      { id: 3, name: "Giao dịch 3", timestamp: new Date(Date.now() - 1000 * 60 * 60 * 48) },
-      { id: 4, name: "Giao dịch 4", timestamp: new Date(Date.now() - 1000 * 60 * 60 * 72) },
-      { id: 5, name: "Giao dịch 5", timestamp: new Date(Date.now() - 1000 * 60 * 60 * 96) },
-      { id: 6, name: "Giao dịch 6", timestamp: new Date(Date.now() - 1000 * 60 * 60 * 120) },{ id: 1, name: "Giao dịch 1", timestamp: new Date() },
-      { id: 2, name: "Giao dịch 2", timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24) },
-      { id: 3, name: "Giao dịch 3", timestamp: new Date(Date.now() - 1000 * 60 * 60 * 48) },
-      { id: 4, name: "Giao dịch 4", timestamp: new Date(Date.now() - 1000 * 60 * 60 * 72) },
-      { id: 5, name: "Giao dịch 5", timestamp: new Date(Date.now() - 1000 * 60 * 60 * 96) },
-      { id: 6, name: "Giao dịch 6", timestamp: new Date(Date.now() - 1000 * 60 * 60 * 120) },
-    ],
-  };
-
+  const [employee,setEmployee] = useState({});
+  const [transactions,setTransactions] = useState([]);
+  const [printers,setPrinters] = useState([]);
+  useEffect(()=>{
+    const fetchEmployee = async()=>{
+      const api = `${apiBaseUrl}/users/${id}`;
+      const token = localStorage.getItem("accessTokenAdmin");
+      const res = await axios.get(api,{
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+     if(res.status ===200) {
+      const employeeRes = res.data.data;
+      setEmployee({
+        name: `${employeeRes.name.firstName} ${employeeRes.name.lastName}`,
+        email: employeeRes.email.value,
+        phoneNumber: employeeRes.phoneNumber,
+        employeeId: employeeRes.employee.employeeId,
+        startWorkDate: employeeRes.employee.startWorkDate,
+      });
+     }
+    }
+    fetchEmployee();
+  },[]);
+  useEffect(()=>{
+    const fetchTransction = async()=>{
+      const api = `${apiBaseUrl}/employees/${id}/transactions`;
+      const token = localStorage.getItem("accessTokenAdmin");
+      const res = await axios.get(api,{
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        params: {
+          sort: "desc:createdAt",
+        },
+      });
+      if(res.status===200) {
+        const transactionsRes = res.data.data.data; 
+        setTransactions(transactionsRes.map((transaction)=>({
+          id: transaction.id.value,
+          name: transaction.name,
+          createdAt: transaction.createdAt,
+        })))
+      }
+    }
+    fetchTransction();
+  },[]);
+  useEffect(()=>{
+    const fetchPrinter = async ()=>{
+      const api = `${apiBaseUrl}/employees/${id}/printers`;
+      const token = localStorage.getItem("accessTokenAdmin");
+      const res = await axios.get(api,{
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if(res.status===200) {
+        const printers = res.data.data;
+        setPrinters(printers.map((printer=>({
+          id: printer.printerId.value,
+          name: printer.printerName,
+        }))));
+      }
+    }
+    fetchPrinter();
+  },[]);
+  
+ 
   return (
     <div>
       <Nav />
@@ -52,8 +95,8 @@ const EmployAccount = () => {
               </h3>
               <div className="tw-h-48 tw-overflow-y-auto"> {/* Thêm chiều cao cố định và thanh cuộn */}
                 <ul className="tw-text-sm tw-text-black tw-text-center">
-                  {employee.printerList.map((printer, index) => (
-                    <li key={index} className="tw-mb-4 tw-flex tw-justify-center tw-text-black">
+                  {printers.map((printer) => (
+                    <li key={printer.id} className="tw-mb-4 tw-flex tw-justify-center tw-text-black">
                        <Link to={"/inforprinter"}>
                         <p className="tw-font-bold tw-ml-2 tw-cursor-pointer tw-text-black hover:tw-text-blue-500">
                           {printer}
@@ -88,7 +131,7 @@ const EmployAccount = () => {
                 <span className="tw-font-bold">Số điện thoại:</span> {employee.phone}
               </p>
               <p className="tw-text-black">
-                <span className="tw-font-bold">Ngày bắt đầu làm việc:</span> {new Date(employee.startDate).toLocaleDateString()}
+                <span className="tw-font-bold">Ngày bắt đầu làm việc:</span> {new Date(employee.startWorkDate).toLocaleDateString()}
               </p>
             </div>
           </div>
@@ -104,12 +147,12 @@ const EmployAccount = () => {
               </h3>
               <div className="tw-h-48 tw-overflow-y-auto">
                 <ul className="tw-text-sm tw-text-gray-700">
-                  {employee.transactions.map((transaction, index) => (
-                    <li key={index} className="tw-flex tw-justify-between">
+                  {transactions.map((transaction) => (
+                    <li key={transaction.id} className="tw-flex tw-justify-between">
                       <Link to={"/transaction-detail"}>
                         <p className="tw-font-bold tw-ml-2 tw-cursor-pointer tw-text-black hover:tw-text-blue-500">{transaction.name}</p>
                       </Link>
-                      <p className="tw-text-black tw-mr-2">{new Date(transaction.timestamp).toLocaleString()}</p>
+                      <p className="tw-text-black tw-mr-2">{new Date(transaction.createdAt).toLocaleString()}</p>
                     </li>
                   ))}
                 </ul>

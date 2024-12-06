@@ -6,7 +6,7 @@ import { apiBaseUrl } from '../../../config';
 
 const TransactionConfirmation = () => {
   const {newDocuments, name, printerId,oldDocuments} = useTransactionStore();
-  console.log(typeof oldDocuments);
+  console.log(printerId);
   const navigate = useNavigate();
   const files = [...newDocuments,...oldDocuments].map((document)=>({
     name: document.metadata.name,

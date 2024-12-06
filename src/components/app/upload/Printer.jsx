@@ -6,6 +6,7 @@ import {  useNavigate } from "react-router-dom";
 import { useEffect, useState} from "react";
 import axios from "axios";
 import { useTransactionStore } from "../Printsetting/PrintTransactionStore";
+import { apiBaseUrl } from '../../../config';
 
 
 
@@ -17,7 +18,7 @@ const Printer = () => {
   const {setPrinter} = useTransactionStore();
   useEffect(()=>{
     const fetchPrinterList = async ()=>{
-      const api = "http://localhost:8080/printers";
+      const api = `${apiBaseUrl}/printers`;
       const token = localStorage.getItem("accessTokenCustomer");
       const page = 1;
       const size = 10;
@@ -53,7 +54,7 @@ const Printer = () => {
   const handleOnClick = () => {
     navigate('/upload/printsetting', {replace:true})
   }
-
+  console.log(printerList);
   return (
     <>
     <Header />

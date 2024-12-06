@@ -14,6 +14,14 @@ const role = [
 ]
 
 const manageTrans = (roleAcc) => {
+  if(roleAcc === 'employee') {
+    return(
+      <Link to={`/employee/printers`} className="tw-flex tw-items-center tw-p-2 tw-text-gray-900 tw-rounded-lg hover:tw-text-customBlue hover:tw-bg-gray-100">
+    <MdManageHistory className="tw-w-5 tw-h-5"/>
+    <span className="tw-ms-3">Transaction Management</span>
+  </Link>
+    )
+  }
   return (
   <Link to={`/${role[role.indexOf(roleAcc)]}/management/transaction`} className="tw-flex tw-items-center tw-p-2 tw-text-gray-900 tw-rounded-lg hover:tw-text-customBlue hover:tw-bg-gray-100">
     <MdManageHistory className="tw-w-5 tw-h-5"/>

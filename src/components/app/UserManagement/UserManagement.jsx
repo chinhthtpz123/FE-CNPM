@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Header from '../../layout/Nav';
 import Footer from '../../layout/Footer';
 import { IoAddSharp } from "react-icons/io5";
@@ -6,27 +6,39 @@ import { CiUser } from "react-icons/ci";
 import { BiLogoGmail } from "react-icons/bi";
 import { FiPrinter } from "react-icons/fi";
 import { FaMinus } from "react-icons/fa6";
+import { apiBaseUrl } from '../../../config';
+import axios from 'axios';
 
 const UserManagement = () => {
     const [view, setView] = useState('employees');
-    const [customers, setCustomers] = useState([
-    {
-      id: 'C001',
-      name: 'Customer 1',
-      email: 'customer1@example.com',
-      type: 'Giảng viên',
-      paperInfo: { A3: 10, A4: 20, A5: 30 },
-    },
-    {
-      id: 'C002',
-      name: 'Customer 2',
-      email: 'customer2@example.com',
-      type: 'Sinh viên',
-      paperInfo: { A3: 5, A4: 10, A5: 15 },
-    },
-    ]);
-    const [selectedCustomerIndex, setSelectedCustomerIndex] = useState(null);
     const [employees, setEmployees] = useState([]);
+    useEffect(()=>{
+      const fetchEmployee = async()=>{
+        const api = `${apiBaseUrl}/users`;
+        const token = localStorage.getItem("accessTokenAdmin");
+        const res = await axios.get(api,{
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          params: {
+            role: 'EMPLOYEE',
+            sort: 'desc:lastName',
+          },
+        });
+        if(res.status ===200) {
+          setEmployees(res.data.data.data.map((employee)=>({
+            id: employee.id.value,
+            email: employee.email.value,
+            name: `${employee.name.firstName} ${employee.name.lastName}`,
+            phoneNumber: employee.phoneNumber,
+            active: employee.isActive? 'Chưa điền thông tin' : 'Đã điền thông tin',
+          })))
+        }
+      }
+      fetchEmployee();
+    },[])
+    const [selectedCustomerIndex, setSelectedCustomerIndex] = useState(null);
+    const [customers, setCustomers] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedEmployeeIndex, setSelectedEmployeeIndex] = useState(null);
     const [newEmployee, setNewEmployee] = useState({
@@ -36,27 +48,108 @@ const UserManagement = () => {
     active: 'Chưa điền thông tin',
     printers: [],
   });
+    const handleChangeTab = async (tab) => {
+      if(tab === view) {
+        return;
+      }
+      if(tab === 'employees') {
+        setView('employees')
+        const api = `${apiBaseUrl}/users`;
+        const token = localStorage.getItem("accessTokenAdmin");
+        const res = await axios.get(api,{
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          params: {
+            role: 'EMPLOYEE',
+            sort: 'desc:lastName',
+          },
+        });
+        if(res.status ===200) {
+          setEmployees(res.data.data.data.map((employee)=>({
+            id: employee.id.value,
+            email: employee.email.value,
+            name: `${employee.name.firstName} ${employee.name.lastName}`,
+            phoneNumber: employee.phoneNumber,
+            active: employee.isActive? 'Chưa điền thông tin' : 'Đã điền thông tin',
+          })))
+        }
+      } else {
+        setView("customers");
+        const api = `${apiBaseUrl}/users`;
+        const token = localStorage.getItem("accessTokenAdmin");
+        const res = await axios.get(api,{
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          params: {
+            role: 'CUSTOMER',
+            sort: 'desc:lastName',
+          },
+        });
+        if(res.status ===200) {
+          setCustomers(res.data.data.data.map((customer)=>({
+            id: customer.id.value,
+            email: customer.email.value,
+            name: `${customer.name.firstName} ${customer.name.lastName}`,
+            phoneNumber: customer.phoneNumber,
+            active: customer.isActive? 'Chưa điền thông tin' : 'Đã điền thông tin',
+            paperInfo: {
+              A3: '100',
+              A4: '100',
+              A5: '100'
+            }
+          })))
+        }
+      }
+    }
   
     const [isPrinterDropdownOpen, setIsPrinterDropdownOpen] = useState(false);
 
-    const availablePrinters = ['Printer A', 'Printer B', 'Printer C', 
-                            'Printer D', 'Printer E', 'Printer F',
-                            'Printer G', 'Printer H', 'Printer I',
-                            'Printer J', 'Printer K', 'Printer L',
-                        ];
+    const [availablePrinters,setAvailablePrinters] = useState([]);
 
-    const handleAddEmployee = () => {
-        setEmployees([...employees, newEmployee]);
-        setNewEmployee({
-            id: '',
-            name: '',
-            email: '',
-            active: 'Chưa điền thông tin',
-            printers: [],
+    const handleAddEmployee = async () => {
+        const api = `${apiBaseUrl}/users/addEmployeeMail`;
+        const token = localStorage.getItem("accessTokenAdmin");
+        const res = await axios.post(api, {
+          email: newEmployee.email,
+          printers: newEmployee.printers.map((printer)=>({printerId:printer.id,isManager:true}))
+        },{
+          headers: {
+            Authorization: `Bearer ${token}`,
+          }
         });
-        setIsModalOpen(false);
-        setIsPrinterDropdownOpen(false);
+        if(res.status === 201) {
+          setEmployees([...employees, newEmployee]);
+          setNewEmployee({
+              id: '',
+              name: '',
+              email: '',
+              active: 'Chưa điền thông tin',
+              printers: [],
+          });
+          setIsModalOpen(false);
+          setIsPrinterDropdownOpen(false);
+      }
+        
     };
+
+    const handleOpenAddEmployeeTab = async ()=>{
+        setIsModalOpen(true);
+        const api = `${apiBaseUrl}/printers`;
+        const token = localStorage.getItem("accessTokenAdmin");
+        const res = await axios.get(api,{
+          headers:{
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        if(res.status===200) {
+          setAvailablePrinters(res.data.data.data.map((printer)=>({
+            id: printer.id.value,
+            name: printer.name,
+          })))
+        }
+    }
 
     const togglePrinterSelection = (printer) => {
         setNewEmployee((prev) => {
@@ -68,6 +161,7 @@ const UserManagement = () => {
             : [...prev.printers, printer], // Thêm vào danh sách
         };
         });
+
     };
     const toggleEmployeeDropdown = (index) => {
         setSelectedEmployeeIndex((prevIndex) => (prevIndex === index ? null : index));
@@ -77,6 +171,7 @@ const UserManagement = () => {
       };
 
 const addPrinterToEmployee = (employeeIndex, printer) => {
+    console.log(printer);
     setEmployees((prev) =>
       prev.map((employee, index) =>
         index === employeeIndex
@@ -95,6 +190,7 @@ const removePrinterFromEmployee = (employeeIndex, printer) => {
       )
     );
   };
+  console.log(newEmployee);
 
   return (
     <>
@@ -104,13 +200,13 @@ const removePrinterFromEmployee = (employeeIndex, printer) => {
       <div className="tabs-header">
         <button
           className={view === 'employees' ? 'active-tab' : ''}
-          onClick={() => setView('employees')}
+          onClick={() => handleChangeTab("employees")}
         >
           Manage Employees
         </button>
         <button
           className={view === 'customers' ? 'active-tab' : ''}
-          onClick={() => setView('customers')}
+          onClick={() => handleChangeTab("customers")}
         >
           Manage Customers
         </button>
@@ -119,11 +215,11 @@ const removePrinterFromEmployee = (employeeIndex, printer) => {
         <div className="managment-container">
         {view === 'employees' && (
             <div>
-                <header class="tw-flex tw-items-center tw-justify-between tw-mb-3">
-                    <h2 class="tw-text-lg tw-leading-6 tw-font-medium tw-text-customBlue">Employee List</h2>
+                <header className="tw-flex tw-items-center tw-justify-between tw-mb-3">
+                    <h2 className="tw-text-lg tw-leading-6 tw-font-medium tw-text-customBlue">Employee List</h2>
                     <button className="add-emp-button tw-text-customBlue tw-group tw-flex tw-items-center 
                     tw-rounded-md tw-text-sm tw-font-medium tw-px-4 tw-py-2" 
-                    onClick={() => setIsModalOpen(true)}>
+                    onClick={() => handleOpenAddEmployeeTab()}>
                       <IoAddSharp className='tw-mr-1'/>
                      New
                     </button>
@@ -133,9 +229,9 @@ const removePrinterFromEmployee = (employeeIndex, printer) => {
                     <table>
                     <thead>
                         <tr className='tw-text-customBlue'>
-                        <th className='first'>ID</th>
+                        <th className='first'>Email</th>
                         <th>Name</th>
-                        <th>Email</th>
+                        <th>Phone number</th>
                         <th className='last'>Active</th>
                         {/* <th className='last'>Actions</th> */}
                         </tr>
@@ -144,9 +240,9 @@ const removePrinterFromEmployee = (employeeIndex, printer) => {
                         {employees.map((employee, index) => (
                             <React.Fragment key={index}>
                             <tr onClick={() => toggleEmployeeDropdown(index)}>
-                                <td>{employee.id}</td>
-                                <td>{employee.name}</td>
                                 <td>{employee.email}</td>
+                                <td>{employee.name}</td>
+                                <td>{employee.phoneNumber}</td>
                                 <td>{employee.active}</td>
                             </tr>
                             {selectedEmployeeIndex === index && (
@@ -158,7 +254,7 @@ const removePrinterFromEmployee = (employeeIndex, printer) => {
                                         <ul>
                                         {employee.printers.map((printer, i) => (
                                             <li key={i}>
-                                            {printer}
+                                            {printer.name}
                                             <button
                                                 className="remove-button"
                                                 onClick={(e) => {
@@ -174,10 +270,10 @@ const removePrinterFromEmployee = (employeeIndex, printer) => {
                                     ) : (
                                         <p>No Printers Assigned</p>
                                     )}
-                                    <div className="add-printer-dropdown">
+                                    <div className="add-printer-dropdown"> 
                                         <h4>Add Printer</h4>
                                         {availablePrinters
-                                        .filter((printer) => !employee.printers.includes(printer))
+                                        .filter((printer) => !employee.printers.some((p) => p.id === printer.id))
                                         .map((printer, i) => (
                                             <button
                                             key={i}
@@ -186,7 +282,7 @@ const removePrinterFromEmployee = (employeeIndex, printer) => {
                                                 addPrinterToEmployee(index, printer);
                                             }}
                                             >
-                                            {printer}
+                                            {printer.name}
                                             </button>
                                         ))}
                                     </div>
@@ -216,20 +312,20 @@ const removePrinterFromEmployee = (employeeIndex, printer) => {
                         <table>
                             <thead>
                             <tr >
-                                <th className='first'>ID</th>
+                                <th className='first'>Email</th>
                                 <th>Name</th>
-                                <th>Email</th>
-                                <th className='last'>Type</th>
+                                <th>Phone number</th>
+                                <th className='last'>Active</th>
                             </tr>
                             </thead>
                             <tbody>
                             {customers.map((customer, index) => (
                                 <React.Fragment key={index}>
                                 <tr onClick={() => toggleCustomerDropdown(index)}>
-                                    <td>{customer.id}</td>
-                                    <td>{customer.name}</td>
                                     <td>{customer.email}</td>
-                                    <td>{customer.type}</td>
+                                    <td>{customer.name}</td>
+                                    <td>{customer.phoneNumber}</td>
+                                    <td>{customer.active}</td>
                                 </tr>
                                 {selectedCustomerIndex === index && (
                                     <tr>
@@ -296,30 +392,28 @@ const removePrinterFromEmployee = (employeeIndex, printer) => {
             {/* Accordion Dropdown */}
             <div className="printer-modal-dropdown">
               <div className="tw-flex">
-                <FiPrinter />
+                <i className='ti-printer tw-mr-1'></i>
                 <div
                   className="dropdown-header"
-                  
                   onClick={() => setIsPrinterDropdownOpen(!isPrinterDropdownOpen)}
                 >
-                  <p className='tw-mb-0 tw-w-[90%]'>Printers Assigned</p>
-                  <span>{isPrinterDropdownOpen ? <FaMinus />
-                                                  : <IoAddSharp /> }</span>
+                  <p className='tw-mb-0 tw-w-[80%]'>Printers Assigned</p>
+                  <span>{isPrinterDropdownOpen ? <i className='ti-minus'></i> 
+                                                : <i className='ti-plus'></i>}</span>
                 </div>
-
               </div>
               {isPrinterDropdownOpen && (
-                <div className="dropdown-body tw-ml-[45px] tw-mt-2">
+                <div className="dropdown-body tw-ml-[25px] tw-mt-1">
                   {availablePrinters.map((printer, index) => (
-                    <div key={index} className="dropdown-item">
+                    <div key={printer.id} className="dropdown-item">
                       <input
                         type="checkbox"
-                        id={`printer-${index}`}
+                        id={`printer-${printer.id}`}
                         className='tw-mr-3'
-                        checked={newEmployee.printers.includes(printer)}
+                        checked={newEmployee.printers.some((p) => p.id === printer.id)}
                         onChange={() => togglePrinterSelection(printer)}
                       />
-                      <label htmlFor={`printer-${index}`}>{printer}</label>
+                      <label htmlFor={`printer-${printer.id}`}>{printer.name}</label>
                     </div>
                   ))}
                 </div>

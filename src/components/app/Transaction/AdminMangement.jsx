@@ -4,7 +4,6 @@ import axios from 'axios';
 import { apiBaseUrl } from "../../../config.js";
 const AdminLazyLoading = lazy(() => import('./AdminLazyLoading.jsx'));
 
-let transactionsList = [];
 
 
 
@@ -34,57 +33,63 @@ let transactionsList = [];
 
 const TransactionManagement = () => {
   const [status, setStatus] = useState("pending");
-  const [visibleData, setVisibleData] = useState(transactionsList);
-  const loadMoreData = useCallback(() => {
-    setVisibleData(prev => {
-      return [...prev, ...transactionsList.map((transaction)=>({
-        id: transaction.transactionId,
-        name: transaction.name,
-            customerName: `${transaction.customerName.firstName} ${transaction.customerName.lastName}`,
-            employeeName: `${transaction.employeeName.firstName} ${transaction.employeeName.lastName}`,
-            createdAt: transaction.createdAt,
-      }))];
-    });
-  }, [status]);
+  const [visibleData, setVisibleData] = useState([]);
+  const [page, setPage] = useState(1); // Current page
+  const [hasMore, setHasMore] = useState(true); // Whether more data is available
 
-  useEffect(() => {
-    const fetchAdminTransactions = async (status)=>{
+  const fetchAdminTransactions = useCallback(async () => {
+    try {
+
       const api_transactions = `${apiBaseUrl}/transactions`;
       const token = localStorage.getItem("accessTokenAdmin");
-      const res = await axios.get(api_transactions,{
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        params:{
-          status: status,
-        }
+      
+      const res = await axios.get(api_transactions, {
+        headers: { Authorization: `Bearer ${token}` },
+        params: { status: status.toUpperCase(), page,sort: "desc:createdAt" ,size:3}, // Include page in params
       });
-      if(res.status == 200) {
-        transactionsList = res.data.data.data;
-        // renderTable(transactions);
+
+      if (res.status === 200) {
+        const fetchedTransactions = res.data.data.data.map((transaction) => ({
+          id: transaction.id,
+          transactionId: transaction.transactionId,
+          name: transaction.name,
+          customerName: `${transaction.customerName.firstName} ${transaction.customerName.lastName}`,
+          employeeName: `${transaction.employeeName.firstName} ${transaction.employeeName.lastName}`,
+          createdAt: new Date(transaction.createdAt).toLocaleString(),
+        }));
+        setVisibleData((prev) => [...prev, ...fetchedTransactions]); // Append new data
+        setHasMore(fetchedTransactions.length > 0); // Check if there's more data
       } else {
         console.error("Failed to fetch transactions:", res.data.message);
+        setHasMore(false);
       }
-    
+    } catch (error) {
+      console.error("Error fetching transactions:", error);
+      setHasMore(false);
     }
-    fetchAdminTransactions(status.toUpperCase());
-  },[]);
-
-  useEffect(()=>{
-    loadMoreData();
-  },[])
-  const hoverButton = (() => "tw-text-gray-500 tw-bg-white tw-transition-all hover:tw-translate-y-[-4px]")();
+  }, [status, page]);
 
   const handleScroll = (e) => {
     const { scrollTop, clientHeight, scrollHeight } = e.target;
-
-    // Trigger when scrolled near the bottom
-    if (scrollTop + clientHeight >= scrollHeight - 50) {
-      setTimeout(() => {
-        loadMoreData();
-      }, 1000)
+    if (scrollTop + clientHeight >= scrollHeight - 50 && hasMore) {
+      setPage((prevPage) => prevPage + 1); // Increment page
     }
   };
+
+  useEffect(() => {
+    setTimeout(()=>{
+      fetchAdminTransactions();
+    },1000)
+    
+  }, [page, status]);
+
+  useEffect(() => {
+    setVisibleData([]);
+    setPage(1);
+    setHasMore(true);
+  }, [status]);
+  const hoverButton = (() => "tw-text-gray-500 tw-bg-white tw-transition-all hover:tw-translate-y-[-4px]")();
+
   console.log(visibleData)
   return (
     <>

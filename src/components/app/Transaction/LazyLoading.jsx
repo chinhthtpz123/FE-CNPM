@@ -1,9 +1,14 @@
-import React from "react";
 import { AiOutlineCheckCircle } from 'react-icons/ai';
+import { apiBaseUrl } from "../../../config";
+import axios from "axios";
+import { Link } from 'react-router-dom';
+
+
 
 const LazyLoading = (props) => {
-  const { visibleData, status } = props;
-  const OnChange = props.OnChange;
+  const { visibleData, status, OnChange } = props;
+
+  
   return (
     <table className="tw-mx-auto tw-border-separate tw-border tw-border-slate-200 tw-rounded-2xl tw-border-spacing-0 tw-overflow-hidden tw-w-full">
       <thead className="tw-bg-gray-100">
@@ -35,12 +40,12 @@ const LazyLoading = (props) => {
 
           return index === visibleData.length - 1 ? (
             <tr key={index}>
-              <td className="tw-w-28 tw-h-10 tw-py-3 tw-text-center">{item.id}</td>
+              <td className="tw-w-28 tw-h-10 tw-py-3 tw-text-center"><Link to={`/employee/print/detail/${item.id}`}>{item.transactionId}</Link></td>
               <td className="tw-w-28 tw-h-10 tw-py-3 tw-text-center">{item.name}</td>
               <td className="tw-w-28 tw-h-10 tw-py-3 tw-text-center">{item.customerName}</td>
               <td className="tw-w-28 tw-h-10 tw-py-3 tw-text-center">{item.createdAt}</td>
               <td className="tw-w-28 tw-h-10 tw-py-3"
-                onClick={() => handleChange(item)}>
+                onClick={() => OnChange(item)}>
                 {
                   item.isChange ? <AiOutlineCheckCircle className="tw-text-green-500 tw-w-6 tw-h-auto" /> :
               
@@ -51,7 +56,7 @@ const LazyLoading = (props) => {
           ) :
           (
             <tr key={index}>
-              <td className="tw-w-28 tw-h-10 tw-py-3 tw-border-b tw-text-center tw-border-slate-200">{item.id}</td>
+              <td className="tw-w-28 tw-h-10 tw-py-3 tw-text-center"><Link to={`/employee/print/detail/${item.id}`}>{item.transactionId}</Link></td>
               <td className="tw-w-28 tw-h-10 tw-py-3 tw-border-b tw-text-center tw-border-slate-200">{item.name}</td>
               <td className="tw-w-28 tw-h-10 tw-py-3 tw-border-b tw-text-center tw-border-slate-200">{item.customerName}</td>
               <td className="tw-w-28 tw-h-10 tw-py-3 tw-border-b tw-text-center tw-border-slate-200">{item.createdAt}</td>

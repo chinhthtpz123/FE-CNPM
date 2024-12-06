@@ -13,7 +13,7 @@ const AdminLazyLoading = (props) => {
           <th className="tw-px-8 tw-py-3 tw-border-b tw-border-slate-200 tw-text-center">ID</th>
           <th className="tw-px-8 tw-py-3 tw-border-b tw-border-slate-200 tw-text-center">Transaction Name</th>
           <th className="tw-px-8 tw-py-3 tw-border-b tw-border-slate-200 tw-text-center">Customer Name</th>
-          <th className="tw-px-8 tw-py-3 tw-border-b tw-border-slate-200 tw-text-center">Employee Name</th>
+          {status === 'pending'? null : <th className="tw-px-8 tw-py-3 tw-border-b tw-border-slate-200 tw-text-center">Employee Name</th>}
           <th className="tw-px-8 tw-py-3 tw-border-b tw-border-slate-200 tw-text-center">CreatedAt</th>
         </tr>
       </thead>
@@ -39,8 +39,8 @@ const AdminLazyLoading = (props) => {
             <tr key={index}>
               <td className="tw-w-28 tw-h-10 tw-py-3 tw-text-center">{item.transactionId}</td>
               <td className="tw-w-28 tw-h-10 tw-py-3 tw-text-center">{item.name}</td>
-              <td className="tw-w-28 tw-h-10 tw-py-3 tw-text-center">{item.customerName.firstName} {item.customerName.lastName}</td>
-              <td className="tw-w-28 tw-h-10 tw-py-3 tw-text-center">{item.employeeName.firstName} {item.employeeName.lastName}</td>
+              <td className="tw-w-28 tw-h-10 tw-py-3 tw-text-center">{item.customerName}</td>
+              {status === 'pending'? null: <td className="tw-w-28 tw-h-10 tw-py-3 tw-text-center">{item.employeeName}</td>}
               <td className="tw-w-28 tw-h-10 tw-py-3 tw-text-center">{item.createdAt}</td>
               {/* <td className="tw-w-28 tw-h-10 tw-py-3"
                 onClick={() => handleChange(item)}>
@@ -54,10 +54,10 @@ const AdminLazyLoading = (props) => {
           ) :
           (
             <tr key={index}>
-              <td className="tw-w-28 tw-h-10 tw-py-3 tw-border-b tw-text-center tw-border-slate-200">{item.id}</td>
+              <td className="tw-w-28 tw-h-10 tw-py-3 tw-border-b tw-text-center tw-border-slate-200">{item.transactionId}</td>
               <td className="tw-w-28 tw-h-10 tw-py-3 tw-border-b tw-text-center tw-border-slate-200">{item.name}</td>
               <td className="tw-w-28 tw-h-10 tw-py-3 tw-border-b tw-text-center tw-border-slate-200">{item.customerName}</td>
-              <td className="tw-w-28 tw-h-10 tw-py-3 tw-border-b tw-text-center tw-border-slate-200">{item.employeeName}</td>
+              {status === 'pending'?null:<td className="tw-w-28 tw-h-10 tw-py-3 tw-border-b tw-text-center tw-border-slate-200">{item.employeeName}</td>}
               <td className="tw-w-28 tw-h-10 tw-py-3 tw-border-b tw-text-center tw-border-slate-200">{item.createdAt}</td>
               {/* <td 
                 className="tw-w-28 tw-h-10 tw-py-3 tw-border-b tw-border-slate-200"

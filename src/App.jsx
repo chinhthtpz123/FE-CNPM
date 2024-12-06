@@ -34,46 +34,52 @@ import CusAccount from "./components/app/InforAccount/CusAccount.jsx";
 // import ChoosePrinter from "./components/app/Printer/Printerchoose.jsx";
 import InforPrinter from "./components/app/Printer/InforPrinter.jsx";
 import EmployeeInfo from "./components/app/InforAccount/EmployAccount.jsx";
+import ChoosePrinter from "./components/app/Printer/ChoosePrinter.jsx";
 const router = createBrowserRouter([
   {
     path: '/',
     element: <HomePage />,
-    errorElement: <ErrorPage />,
+    errorElement: <ErrorPage />, //done
   },
   {
     path: '/home',
     element:  <Home />,
-    errorElement: <ErrorPage />,
+    errorElement: <ErrorPage />, //done
   },
   {
     path: '/upload',
     element: <UploadFile />,
-    errorElement: <ErrorPage />,
+    errorElement: <ErrorPage />, //done
   },
   {
     path: '/login',
     element: <LoginPage />,
-    errorElement: <ErrorPage />,
+    errorElement: <ErrorPage />, //done
   },
   {
     path: '/upload/printer',
     element: <Printer />,
-    errorElement: <ErrorPage />,
+    errorElement: <ErrorPage />, //done
   },
   {
     path: '/upload/printsetting',
     element: <Printsetting />,
-    errorElement: <ErrorPage />,
+    errorElement: <ErrorPage />, //done
   },
   {
     path: '/upload/confirm',
     element: <ConfirmPrint />,
-    errorElement: <ErrorPage />,
+    errorElement: <ErrorPage />, //done
   },
   {
-    path: '/employee/management/transaction',
+    path: '/employee/management/transaction/:id',
     element: <TransactionManagement />,
-    errorElement: <ErrorPage />,
+    errorElement: <ErrorPage />, 
+  },
+  {
+    path: '/employee/printers',
+    element: <ChoosePrinter />,
+    errorElement: <ErrorPage />, 
   },
   {
     path: '/customer/management/transaction',
@@ -88,28 +94,28 @@ const router = createBrowserRouter([
   {
     path: '/afterlogin',
     element: <AfterLogin />,
-    errorElement: <ErrorPage />,
+    errorElement: <ErrorPage />, //done
   },
   {
     path: '/paper/choose',
     element: <ChoosePaper />,
-    errorElement: <ErrorPage />,
+    errorElement: <ErrorPage />, //done
   },
   {
     path: '/paper/shop',
     element: <PaperShop />,
-    errorElement: <ErrorPage />,
+    errorElement: <ErrorPage />, //done
   },
   {
     path: '/employee/print/detail/:id',
     element: <PrintManagement />,
-    errorElement: <ErrorPage />,
+    errorElement: <ErrorPage />, //done
   },
   {
     path: '/customer/print/detail/:id',
     element: <PrintManagementCus />,
     
-    errorElement: <ErrorPage />,
+    errorElement: <ErrorPage />, //done
   },
   {
     path: '/employee/management/transaction',
@@ -124,27 +130,27 @@ const router = createBrowserRouter([
   {
     path: '/afterlogin',
     element: <AfterLogin />,
-    errorElement: <ErrorPage />,
+    errorElement: <ErrorPage />, //done
   },
   {
-    path: '/printer/infor',
+    path: '/printer/infor/:id',
     element: <InforPrinter/>,
-    errorElement: <ErrorPage />,
+    errorElement: <ErrorPage />,  //done
   },
   {
-    path: '/account/employee',
+    path: '/account/employee/:id',
     element: <EmployeeInfo/>,
-    errorElement: <ErrorPage />,
+    errorElement: <ErrorPage />, 
   },
   {
     path: '/admin/print/detail/:id',
     element: <AdminManagementDetail />,
-    errorElement: <ErrorPage />,
+    errorElement: <ErrorPage />, //done
   },
   {
     path: '/admin/management/user',
     element: <UserManagement />,
-    errorElement: <ErrorPage />,
+    errorElement: <ErrorPage />, 
   },
   {
     path: '/admin/management/printer',
